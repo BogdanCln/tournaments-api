@@ -2,9 +2,8 @@ package com.unibuc.tournaments.controller;
 
 import com.unibuc.tournaments.dto.GameRequest;
 import com.unibuc.tournaments.mapper.GameMapper;
-import com.unibuc.tournaments.model.Game;
+import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.service.GameService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

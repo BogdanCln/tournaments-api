@@ -1,7 +1,7 @@
 package com.unibuc.tournaments.repository;
 
-import com.unibuc.tournaments.model.Game;
-import com.unibuc.tournaments.model.GameGenre;
+import com.unibuc.tournaments.model.game.Game;
+import com.unibuc.tournaments.model.game.GameGenre;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,13 +21,11 @@ public class GameRepository {
     private RowMapper<Game> gameMapper = ((resultSet, i) ->
             new Game(resultSet.getInt("id"),
                     resultSet.getString("name"),
-                    resultSet.getString("publisherName"),
+                    resultSet.getString("publisher_name"),
                     GameGenre.valueOf(resultSet.getString("genre"))));
 
     public Optional<Game> createGame(Game game) {
-        System.out.println("game.toString()");
-        System.out.println(game.toString());
-        String query = "INSERT INTO games VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO game VALUES(?, ?, ?, ?)";
         PreparedStatementCreator preparedStatementCreator = (connection) -> {
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setObject(1, null);
@@ -44,7 +42,7 @@ public class GameRepository {
     }
 
     public Optional<Game> getGame(int id) {
-        String query = "SELECT * FROM games WHERE id = ?";
+        String query = "SELECT * FROM game WHERE id = ?";
         List<Game> games = jdbcTemplate.query(query, gameMapper, id);
 
         if (!games.isEmpty()) {
@@ -58,16 +56,16 @@ public class GameRepository {
         String query;
         List<Game> games;
         if (genre != null && publisherName != null) {
-            query = "SELECT * FROM games WHERE genre = ? AND publisherName = ?";
+            query = "SELECT * FROM game WHERE genre = ? AND publisher_name = ?";
             games = jdbcTemplate.query(query, gameMapper, genre, publisherName);
         } else if (genre != null) {
-            query = "SELECT * FROM games WHERE genre = ?";
+            query = "SELECT * FROM game WHERE genre = ?";
             games = jdbcTemplate.query(query, gameMapper, genre);
         } else if (publisherName != null) {
-            query = "SELECT * FROM games WHERE publisherName = ?";
+            query = "SELECT * FROM game WHERE publisher_name = ?";
             games = jdbcTemplate.query(query, gameMapper, publisherName);
         } else {
-            query = "SELECT * FROM games";
+            query = "SELECT * FROM game";
             games = jdbcTemplate.query(query, gameMapper);
         }
         return games;

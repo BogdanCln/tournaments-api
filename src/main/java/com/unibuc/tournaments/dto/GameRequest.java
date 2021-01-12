@@ -1,6 +1,6 @@
 package com.unibuc.tournaments.dto;
 
-import com.unibuc.tournaments.model.GameGenre;
+import com.unibuc.tournaments.model.game.GameGenre;
 
 import javax.validation.constraints.NotBlank;
 

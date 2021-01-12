@@ -1,8 +1,8 @@
 package com.unibuc.tournaments.service;
 
-import com.unibuc.tournaments.exception.GameNotCreatedException;
-import com.unibuc.tournaments.exception.GameNotFoundException;
-import com.unibuc.tournaments.model.Game;
+import com.unibuc.tournaments.exception.game.GameNotCreatedException;
+import com.unibuc.tournaments.exception.game.GameNotFoundException;
+import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.repository.GameRepository;
 import org.springframework.stereotype.Service;
 

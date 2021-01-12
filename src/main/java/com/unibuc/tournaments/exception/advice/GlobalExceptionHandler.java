@@ -1,7 +1,9 @@
 package com.unibuc.tournaments.exception.advice;
 
-import com.unibuc.tournaments.exception.GameNotCreatedException;
-import com.unibuc.tournaments.exception.GameNotFoundException;
+import com.unibuc.tournaments.exception.game.GameNotCreatedException;
+import com.unibuc.tournaments.exception.game.GameNotFoundException;
+import com.unibuc.tournaments.exception.team.TeamNotCreatedException;
+import com.unibuc.tournaments.exception.team.TeamNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,7 +15,6 @@ import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler({GameNotFoundException.class})
     public ResponseEntity<String> handle(GameNotFoundException e) {
         return ResponseEntity
@@ -28,6 +29,20 @@ public class GlobalExceptionHandler {
                 .body(e.getMessage() + " at " + LocalDateTime.now());
     }
 
+    @ExceptionHandler({TeamNotFoundException.class})
+    public ResponseEntity<String> handle(TeamNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
+    @ExceptionHandler({TeamNotCreatedException.class})
+    public ResponseEntity<String> handle(TeamNotCreatedException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handle(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest()
@@ -36,10 +51,4 @@ public class GlobalExceptionHandler {
                         " with message " + e.getFieldError().getDefaultMessage());
     }
 
-//    @ExceptionHandler(CustomerNotFoundException.class)
-//    public ResponseEntity<String> handle(CustomerNotFoundException e) {
-//        return ResponseEntity
-//                .status(HttpStatus.NOT_FOUND)
-//                .body(e.getMessage());
-//    }
 }

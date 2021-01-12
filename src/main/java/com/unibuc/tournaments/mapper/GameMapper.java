@@ -1,7 +1,7 @@
 package com.unibuc.tournaments.mapper;
 
 import com.unibuc.tournaments.dto.GameRequest;
-import com.unibuc.tournaments.model.Game;
+import com.unibuc.tournaments.model.game.Game;
 import org.springframework.stereotype.Component;
 
 @Component

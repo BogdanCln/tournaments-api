@@ -1,4 +1,4 @@
-package com.unibuc.tournaments.model;
+package com.unibuc.tournaments.model.game;
 
 import java.util.Objects;
 
