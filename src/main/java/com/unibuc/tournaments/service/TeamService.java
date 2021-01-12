@@ -4,8 +4,10 @@ import com.unibuc.tournaments.exception.team.TeamNotCreatedException;
 import com.unibuc.tournaments.exception.team.TeamNotFoundException;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.repository.TeamRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,14 @@ public class TeamService {
     }
 
     public Team createTeam(Team team) {
-        Optional<Team> teamOptional = this.teamRepository.createTeam(team);
-        if (teamOptional.isPresent()) {
+        Optional<Team> teamOptional;
+        try {
+            teamOptional = this.teamRepository.createTeam(team);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("createTeam() SQL error: " + e.getMessage());
+            throw new TeamNotCreatedException();
+        }
+        if (teamOptional != null && teamOptional.isPresent()) {
             return teamOptional.get();
         } else {
             throw new TeamNotCreatedException();

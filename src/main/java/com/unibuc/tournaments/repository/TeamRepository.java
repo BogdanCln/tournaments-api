@@ -3,6 +3,7 @@ package com.unibuc.tournaments.repository;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberType;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.*;
 
