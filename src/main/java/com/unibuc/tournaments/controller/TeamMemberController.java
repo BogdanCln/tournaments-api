@@ -1,10 +1,12 @@
 package com.unibuc.tournaments.controller;
 
+import com.unibuc.tournaments.dto.TeamMemberCategoryRequest;
 import com.unibuc.tournaments.dto.TeamMemberRequest;
 import com.unibuc.tournaments.dto.TeamRequest;
 import com.unibuc.tournaments.mapper.TeamMapper;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
+import com.unibuc.tournaments.model.team.TeamMemberCategory;
 import com.unibuc.tournaments.service.TeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +47,15 @@ public class TeamMemberController {
             @RequestParam(required = false) String type
     ) {
         return teamService.getTeamMembersFiltered(teamId, type);
+    }
+
+    @PostMapping("/categories")
+    public ResponseEntity<TeamMember> createCategory(
+            @Valid
+            @RequestBody TeamMemberCategoryRequest requestBody) {
+        TeamMemberCategory teamMemberCategory = teamMapper.teamMemberCategoryRequestToTeamMemberCategory(requestBody);
+        TeamMember updatedMember = teamService.createTeamMemberCategory(teamMemberCategory);
+        return ResponseEntity.created(URI.create("/teams/members/" + updatedMember.getId()))
+                .body(updatedMember);
     }
 }

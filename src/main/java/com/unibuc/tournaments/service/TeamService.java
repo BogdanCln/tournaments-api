@@ -3,6 +3,7 @@ package com.unibuc.tournaments.service;
 import com.unibuc.tournaments.exception.team.*;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
+import com.unibuc.tournaments.model.team.TeamMemberCategory;
 import com.unibuc.tournaments.repository.TeamMemberRepository;
 import com.unibuc.tournaments.repository.TeamRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -86,4 +87,22 @@ public class TeamService {
         return teamMemberRepository.getTeamMembersFiltered(gameId, name);
     }
 
+    public TeamMember createTeamMemberCategory(TeamMemberCategory teamMemberCategory) {
+        Optional<TeamMember> member = teamMemberRepository.getTeamMember(teamMemberCategory.getMemberId());
+        if (member.isEmpty()) {
+            throw new TeamMemberNotFoundException();
+        }
+
+        try {
+            member = this.teamMemberRepository.createTeamMemberCategory(teamMemberCategory);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("createTeamMemberCategory() SQL error: " + e.getMessage());
+            throw new TeamMemberCategoryNotCreatedException();
+        }
+        if (member != null && member.isPresent()) {
+            return member.get();
+        } else {
+            throw new TeamMemberCategoryNotCreatedException();
+        }
+    }
 }

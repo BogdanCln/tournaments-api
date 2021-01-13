@@ -1,5 +1,7 @@
 package com.unibuc.tournaments.repository;
 
+import com.unibuc.tournaments.exception.team.TeamMemberCategoryNotCreatedException;
+import com.unibuc.tournaments.exception.team.TeamMemberNotFoundException;
 import com.unibuc.tournaments.exception.team.TeamNotFoundException;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
@@ -34,7 +36,7 @@ public class TeamMemberRepository {
     private RowMapper<TeamMemberCategory> teamMemberCategoryMapper = ((resultSet, i) ->
             new TeamMemberCategory(resultSet.getInt("id"),
                     resultSet.getInt("member_id"),
-                    resultSet.getString("category_name")));
+                    resultSet.getString("name")));
 
     public TeamMemberRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -76,11 +78,6 @@ public class TeamMemberRepository {
         }
     }
 
-    private List<TeamMemberCategory> getTeamMemberCategories(int teamMemberId) {
-        String query = "SELECT * FROM team_member_category WHERE member_id = ?";
-        return jdbcTemplate.query(query, teamMemberCategoryMapper, teamMemberId);
-    }
-
     public List<TeamMember> getTeamMembersFiltered(Integer teamId, String type) {
         String query;
         List<TeamMember> teamMembers;
@@ -98,6 +95,41 @@ public class TeamMemberRepository {
             teamMembers = jdbcTemplate.query(query, teamMemberMapper);
         }
 
+        for (TeamMember member : teamMembers) {
+            member.setCategories(getTeamMemberCategories(member.getId()));
+        }
+
         return teamMembers;
+    }
+
+    public Optional<TeamMember> createTeamMemberCategory(TeamMemberCategory category) {
+        Boolean memberExists = jdbcTemplate.queryForObject("select exists(select id from team_member where id = ?)", Boolean.class, category.getMemberId());
+        if (memberExists != null && !memberExists)
+            throw new TeamMemberNotFoundException();
+
+        Boolean categoryExists = jdbcTemplate.queryForObject("select exists(select id from team_member_category where member_id = ? AND name = ?)",
+                Boolean.class,
+                category.getMemberId(),
+                category.getName());
+        if (categoryExists != null && categoryExists)
+            throw new TeamMemberCategoryNotCreatedException();
+
+        String query = "INSERT INTO team_member_category VALUES(?, ?, ?)";
+        PreparedStatementCreator preparedStatementCreator = (connection) -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setObject(1, null);
+            preparedStatement.setInt(2, category.getMemberId());
+            preparedStatement.setString(3, category.getName());
+            return preparedStatement;
+        };
+
+        GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(preparedStatementCreator, generatedKeyHolder);
+        return getTeamMember(category.getMemberId());
+    }
+
+    private List<TeamMemberCategory> getTeamMemberCategories(int teamMemberId) {
+        String query = "SELECT * FROM team_member_category WHERE member_id = ?";
+        return jdbcTemplate.query(query, teamMemberCategoryMapper, teamMemberId);
     }
 }

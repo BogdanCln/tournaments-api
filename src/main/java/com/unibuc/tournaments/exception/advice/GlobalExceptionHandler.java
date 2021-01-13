@@ -63,6 +63,13 @@ public class GlobalExceptionHandler {
                 .body(e.getMessage() + " at " + LocalDateTime.now());
     }
 
+    @ExceptionHandler({TeamMemberCategoryNotCreatedException.class})
+    public ResponseEntity<String> handle(TeamMemberCategoryNotCreatedException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handle(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest()
