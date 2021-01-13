@@ -1,8 +1,10 @@
 package com.unibuc.tournaments.controller;
 
+import com.unibuc.tournaments.dto.TeamMemberRequest;
 import com.unibuc.tournaments.dto.TeamRequest;
 import com.unibuc.tournaments.mapper.TeamMapper;
 import com.unibuc.tournaments.model.team.Team;
+import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.service.TeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +24,6 @@ public class TeamController {
         this.teamMapper = teamMapper;
     }
 
-    @GetMapping()
-    public List<Team> getMultipleTeams(
-            @RequestParam(required = false) Integer gameId,
-            @RequestParam(required = false) String name) {
-        return teamService.getTeamsBy(gameId, name);
-    }
-
-    @GetMapping("/{id}")
-    public Team getTeam(@PathVariable int id) {
-        return teamService.getTeam(id);
-    }
-
     @PostMapping()
     public ResponseEntity<Team> createTeam(
             @Valid
@@ -44,13 +34,43 @@ public class TeamController {
                 .body(repositoryTeam);
     }
 
-//    @PostMapping("/members")
-//    public ResponseEntity<Team> createMember(
-//            @Valid
-//            @RequestBody TeamRequest teamRequest) {
-//        Team team = teamMapper.teamRequestToTeam(teamRequest);
-//        Team repositoryTeam = teamService.createTeam(team);
-//        return ResponseEntity.created(URI.create("/teams/" + team.getId()))
-//                .body(repositoryTeam);
-//    }
+    @GetMapping("/{id}")
+    public Team getTeam(@PathVariable int id) {
+        return teamService.getTeam(id);
+    }
+
+    @GetMapping()
+    public List<Team> getMultipleTeams(
+            @RequestParam(required = false) Integer gameId,
+            @RequestParam(required = false) String name) {
+        return teamService.getTeamsBy(gameId, name);
+    }
+
+    @PostMapping("/members")
+    public ResponseEntity<TeamMember> createMember(
+            @Valid
+            @RequestBody TeamMemberRequest memberRequest) {
+        TeamMember teamMember = teamMapper.teamMemberRequestToTeamMember(memberRequest);
+        TeamMember repositoryTeam = teamService.createTeamMember(teamMember);
+        return ResponseEntity.created(URI.create("/teams/members/" + teamMember.getId()))
+                .body(repositoryTeam);
+    }
+
+    @GetMapping("/members/{id}")
+    public TeamMember getTeamMember(@PathVariable int id) {
+        return teamService.getTeamMember(id);
+    }
+
+    @GetMapping("{teamId}/members")
+    public List<TeamMember> getTeamMembers(@PathVariable int teamId) {
+        return teamService.getTeamMembersBy(teamId, null);
+    }
+
+    @GetMapping("/members")
+    public List<TeamMember> getTeamMembersBy(
+            @RequestParam(required = false) Integer teamId,
+            @RequestParam(required = false) String type
+    ) {
+        return teamService.getTeamMembersBy(teamId, type);
+    }
 }

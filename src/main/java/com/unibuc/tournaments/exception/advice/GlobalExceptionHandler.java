@@ -2,9 +2,7 @@ package com.unibuc.tournaments.exception.advice;
 
 import com.unibuc.tournaments.exception.game.GameNotCreatedException;
 import com.unibuc.tournaments.exception.game.GameNotFoundException;
-import com.unibuc.tournaments.exception.team.TeamAlreadyExistsException;
-import com.unibuc.tournaments.exception.team.TeamNotCreatedException;
-import com.unibuc.tournaments.exception.team.TeamNotFoundException;
+import com.unibuc.tournaments.exception.team.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,8 +41,23 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage() + " at " + LocalDateTime.now());
     }
+
     @ExceptionHandler({TeamAlreadyExistsException.class})
     public ResponseEntity<String> handle(TeamAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
+    @ExceptionHandler({TeamMemberNotFoundException.class})
+    public ResponseEntity<String> handle(TeamMemberNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
+    @ExceptionHandler({TeamMemberNotCreatedException.class})
+    public ResponseEntity<String> handle(TeamMemberNotCreatedException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage() + " at " + LocalDateTime.now());

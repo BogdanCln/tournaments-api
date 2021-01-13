@@ -1,23 +1,24 @@
 package com.unibuc.tournaments.service;
 
-import com.unibuc.tournaments.exception.team.TeamAlreadyExistsException;
-import com.unibuc.tournaments.exception.team.TeamNotCreatedException;
-import com.unibuc.tournaments.exception.team.TeamNotFoundException;
+import com.unibuc.tournaments.exception.team.*;
 import com.unibuc.tournaments.model.team.Team;
+import com.unibuc.tournaments.model.team.TeamMember;
+import com.unibuc.tournaments.repository.TeamMemberRepository;
 import com.unibuc.tournaments.repository.TeamRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TeamService {
     private TeamRepository teamRepository;
+    private TeamMemberRepository teamMemberRepository;
 
-    public TeamService(TeamRepository teamRepository) {
+    public TeamService(TeamRepository teamRepository, TeamMemberRepository teamMemberRepository) {
         this.teamRepository = teamRepository;
+        this.teamMemberRepository = teamMemberRepository;
     }
 
     public Team createTeam(Team team) {
@@ -52,4 +53,37 @@ public class TeamService {
     public List<Team> getTeamsBy(Integer gameId, String name) {
         return teamRepository.getTeamBy(gameId, name);
     }
+
+    public TeamMember createTeamMember(TeamMember teamMember) {
+        Optional<TeamMember> teamMemberOptional = teamMemberRepository.getTeamMember(teamMember.getId());
+        if (teamMemberOptional.isPresent()) {
+            throw new TeamAlreadyExistsException();
+        }
+
+        try {
+            teamMemberOptional = this.teamMemberRepository.createTeamMember(teamMember);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("createTeamMember() SQL error: " + e.getMessage());
+            throw new TeamMemberNotCreatedException();
+        }
+        if (teamMemberOptional != null && teamMemberOptional.isPresent()) {
+            return teamMemberOptional.get();
+        } else {
+            throw new TeamMemberNotCreatedException();
+        }
+    }
+
+    public TeamMember getTeamMember(int id) {
+        Optional<TeamMember> teamMemberOptional = teamMemberRepository.getTeamMember(id);
+        if (teamMemberOptional.isPresent()) {
+            return teamMemberOptional.get();
+        } else {
+            throw new TeamMemberNotFoundException();
+        }
+    }
+
+    public List<TeamMember> getTeamMembersBy(Integer gameId, String name) {
+        return teamMemberRepository.getTeamMembersBy(gameId, name);
+    }
+
 }
