@@ -23,10 +23,10 @@ public class GameController {
     }
 
     @GetMapping()
-    public List<Game> getMultipleGames(
+    public List<Game> getGamesFiltered(
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String publisherName) {
-        return gameService.getGamesBy(genre, publisherName);
+        return gameService.getGamesFiltered(genre, publisherName);
     }
 
     @GetMapping("/{id}")

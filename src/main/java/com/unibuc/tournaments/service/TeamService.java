@@ -22,7 +22,7 @@ public class TeamService {
     }
 
     public Team createTeam(Team team) {
-        List<Team> existing = getTeamsBy(team.getGameId(), team.getName());
+        List<Team> existing = getTeamsFiltered(team.getGameId(), team.getName());
         if (!existing.isEmpty()) {
             throw new TeamAlreadyExistsException();
         }
@@ -50,8 +50,8 @@ public class TeamService {
         }
     }
 
-    public List<Team> getTeamsBy(Integer gameId, String name) {
-        return teamRepository.getTeamBy(gameId, name);
+    public List<Team> getTeamsFiltered(Integer gameId, String name) {
+        return teamRepository.getTeamsFiltered(gameId, name);
     }
 
     public TeamMember createTeamMember(TeamMember teamMember) {
@@ -82,8 +82,8 @@ public class TeamService {
         }
     }
 
-    public List<TeamMember> getTeamMembersBy(Integer gameId, String name) {
-        return teamMemberRepository.getTeamMembersBy(gameId, name);
+    public List<TeamMember> getTeamMembersFiltered(Integer gameId, String name) {
+        return teamMemberRepository.getTeamMembersFiltered(gameId, name);
     }
 
 }

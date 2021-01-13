@@ -1,5 +1,7 @@
 package com.unibuc.tournaments.repository;
 
+import com.unibuc.tournaments.exception.team.TeamNotFoundException;
+import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberCategory;
 import com.unibuc.tournaments.model.team.TeamMemberType;
@@ -9,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
@@ -38,16 +41,20 @@ public class TeamMemberRepository {
     }
 
     public Optional<TeamMember> createTeamMember(TeamMember teamMember) {
+        Boolean teamExists = jdbcTemplate.queryForObject("select exists(select id from team where id = ?)", Boolean.class, teamMember.getTeamId());
+        if (teamExists != null && !teamExists)
+            throw new TeamNotFoundException();
+
         String query = "INSERT INTO team_member VALUES(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatementCreator preparedStatementCreator = (connection) -> {
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setObject(1, null);
-            preparedStatement.setObject(2, teamMember.getTeamId());
-            preparedStatement.setObject(3, teamMember.getType());
-            preparedStatement.setObject(4, teamMember.getFirstName());
-            preparedStatement.setObject(5, teamMember.getLastName());
-            preparedStatement.setObject(6, teamMember.getNickName());
-            preparedStatement.setObject(7, teamMember.getDateOfBirth());
+            preparedStatement.setString(2, teamMember.getType().toString());
+            preparedStatement.setInt(3, teamMember.getTeamId());
+            preparedStatement.setString(4, teamMember.getFirstName());
+            preparedStatement.setString(5, teamMember.getLastName());
+            preparedStatement.setString(6, teamMember.getNickName());
+            preparedStatement.setDate(7, (Date) teamMember.getDateOfBirth());
             return preparedStatement;
         };
 
@@ -74,7 +81,7 @@ public class TeamMemberRepository {
         return jdbcTemplate.query(query, teamMemberCategoryMapper, teamMemberId);
     }
 
-    public List<TeamMember> getTeamMembersBy(Integer teamId, String type) {
+    public List<TeamMember> getTeamMembersFiltered(Integer teamId, String type) {
         String query;
         List<TeamMember> teamMembers;
         if (teamId != null && type != null) {

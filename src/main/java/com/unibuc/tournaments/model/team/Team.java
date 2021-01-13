@@ -8,10 +8,6 @@ public class Team {
     private String name;
     private List<TeamMember> members;
 
-    public void setMembers(List<TeamMember> members) {
-        this.members = members;
-    }
-
     public Team(int gameId, String name) {
         this.gameId = gameId;
         this.name = name;
@@ -41,5 +37,13 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<TeamMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<TeamMember> members) {
+        this.members = members;
     }
 }

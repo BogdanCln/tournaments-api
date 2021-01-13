@@ -35,7 +35,7 @@ public class GameService {
         }
     }
 
-    public List<Game> getGamesBy(String genre, String publisherName) {
-        return gameRepository.getGamesBy(genre, publisherName);
+    public List<Game> getGamesFiltered(String genre, String publisherName) {
+        return gameRepository.getGamesFiltered(genre, publisherName);
     }
 }

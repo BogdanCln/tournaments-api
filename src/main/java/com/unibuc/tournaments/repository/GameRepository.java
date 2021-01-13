@@ -52,7 +52,7 @@ public class GameRepository {
         }
     }
 
-    public List<Game> getGamesBy(String genre, String publisherName) {
+    public List<Game> getGamesFiltered(String genre, String publisherName) {
         String query;
         List<Game> games;
         if (genre != null && publisherName != null) {

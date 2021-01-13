@@ -1,5 +1,7 @@
 package com.unibuc.tournaments.repository;
 
+import com.unibuc.tournaments.exception.game.GameNotFoundException;
+import com.unibuc.tournaments.exception.team.TeamNotFoundException;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberType;
@@ -18,26 +20,23 @@ import java.util.*;
 @Repository
 public class TeamRepository {
     private JdbcTemplate jdbcTemplate;
+    private TeamMemberRepository teamMemberRepository;
 
     private RowMapper<Team> teamMapper = ((resultSet, i) ->
             new Team(resultSet.getInt("id"),
                     resultSet.getInt("game_id"),
                     resultSet.getString("name")));
 
-    private RowMapper<TeamMember> teamMemberMapper = ((resultSet, i) ->
-            new TeamMember(resultSet.getInt("id"),
-                    resultSet.getInt("team_id"),
-                    TeamMemberType.valueOf(resultSet.getString("type")),
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    resultSet.getString("nick_name"),
-                    resultSet.getDate("dob")));
-
-    public TeamRepository(JdbcTemplate jdbcTemplate) {
+    public TeamRepository(JdbcTemplate jdbcTemplate, TeamMemberRepository teamMemberRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.teamMemberRepository = teamMemberRepository;
     }
 
     public Optional<Team> createTeam(Team team) {
+        Boolean gameExists = jdbcTemplate.queryForObject("select exists(select id from game where id = ?)", Boolean.class, team.getGameId());
+        if (gameExists != null && !gameExists)
+            throw new GameNotFoundException();
+
         String query = "INSERT INTO team VALUES(?, ?, ?)";
         PreparedStatementCreator preparedStatementCreator = (connection) -> {
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -58,19 +57,14 @@ public class TeamRepository {
 
         if (!dbTeams.isEmpty()) {
             Team dbTeam = dbTeams.get(0);
-            dbTeam.setMembers(getTeamMembers(dbTeam.getId()));
+            dbTeam.setMembers(teamMemberRepository.getTeamMembersFiltered(dbTeam.getId(), null));
             return Optional.of(dbTeam);
         } else {
             return Optional.empty();
         }
     }
 
-    private List<TeamMember> getTeamMembers(int teamId) {
-        String query = "SELECT * FROM team_member WHERE team_id = ?";
-        return jdbcTemplate.query(query, teamMemberMapper, teamId);
-    }
-
-    public List<Team> getTeamBy(Integer gameId, String name) {
+    public List<Team> getTeamsFiltered(Integer gameId, String name) {
         String query;
         List<Team> teams;
         if (gameId != null && name != null) {
@@ -87,6 +81,9 @@ public class TeamRepository {
             teams = jdbcTemplate.query(query, teamMapper);
         }
 
+        for (Team team : teams) {
+            team.setMembers(teamMemberRepository.getTeamMembersFiltered(team.getId(), null));
+        }
         return teams;
     }
 }
