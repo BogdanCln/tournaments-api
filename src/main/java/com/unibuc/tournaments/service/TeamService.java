@@ -1,5 +1,6 @@
 package com.unibuc.tournaments.service;
 
+import com.unibuc.tournaments.exception.team.TeamAlreadyExistsException;
 import com.unibuc.tournaments.exception.team.TeamNotCreatedException;
 import com.unibuc.tournaments.exception.team.TeamNotFoundException;
 import com.unibuc.tournaments.model.team.Team;
@@ -20,6 +21,11 @@ public class TeamService {
     }
 
     public Team createTeam(Team team) {
+        List<Team> existing = getTeamsBy(team.getGameId(), team.getName());
+        if (!existing.isEmpty()) {
+            throw new TeamAlreadyExistsException();
+        }
+
         Optional<Team> teamOptional;
         try {
             teamOptional = this.teamRepository.createTeam(team);
@@ -43,7 +49,7 @@ public class TeamService {
         }
     }
 
-    public List<Team> getTeamsBy(String gameId) {
-        return teamRepository.getTeamBy(gameId);
+    public List<Team> getTeamsBy(Integer gameId, String name) {
+        return teamRepository.getTeamBy(gameId, name);
     }
 }

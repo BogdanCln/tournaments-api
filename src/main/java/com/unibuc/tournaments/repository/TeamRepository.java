@@ -70,12 +70,18 @@ public class TeamRepository {
         return jdbcTemplate.query(query, teamMemberMapper, teamId);
     }
 
-    public List<Team> getTeamBy(String gameId) {
+    public List<Team> getTeamBy(Integer gameId, String name) {
         String query;
         List<Team> teams;
-        if (gameId != null) {
+        if (gameId != null && name != null) {
+            query = "SELECT * FROM team WHERE game_id = ? AND name = ?";
+            teams = jdbcTemplate.query(query, teamMapper, gameId, name);
+        } else if (gameId != null) {
             query = "SELECT * FROM team WHERE game_id = ?";
             teams = jdbcTemplate.query(query, teamMapper, gameId);
+        } else if (name != null) {
+            query = "SELECT * FROM team WHERE name = ?";
+            teams = jdbcTemplate.query(query, teamMapper, name);
         } else {
             query = "SELECT * FROM team";
             teams = jdbcTemplate.query(query, teamMapper);

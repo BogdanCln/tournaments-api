@@ -2,6 +2,7 @@ package com.unibuc.tournaments.exception.advice;
 
 import com.unibuc.tournaments.exception.game.GameNotCreatedException;
 import com.unibuc.tournaments.exception.game.GameNotFoundException;
+import com.unibuc.tournaments.exception.team.TeamAlreadyExistsException;
 import com.unibuc.tournaments.exception.team.TeamNotCreatedException;
 import com.unibuc.tournaments.exception.team.TeamNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({TeamNotCreatedException.class})
     public ResponseEntity<String> handle(TeamNotCreatedException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+    @ExceptionHandler({TeamAlreadyExistsException.class})
+    public ResponseEntity<String> handle(TeamAlreadyExistsException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage() + " at " + LocalDateTime.now());

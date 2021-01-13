@@ -24,8 +24,9 @@ public class TeamController {
 
     @GetMapping()
     public List<Team> getMultipleTeams(
-            @RequestParam(required = false) String gameId) {
-        return teamService.getTeamsBy(gameId);
+            @RequestParam(required = false) Integer gameId,
+            @RequestParam(required = false) String name) {
+        return teamService.getTeamsBy(gameId, name);
     }
 
     @GetMapping("/{id}")
@@ -42,4 +43,14 @@ public class TeamController {
         return ResponseEntity.created(URI.create("/teams/" + team.getId()))
                 .body(repositoryTeam);
     }
+
+//    @PostMapping("/members")
+//    public ResponseEntity<Team> createMember(
+//            @Valid
+//            @RequestBody TeamRequest teamRequest) {
+//        Team team = teamMapper.teamRequestToTeam(teamRequest);
+//        Team repositoryTeam = teamService.createTeam(team);
+//        return ResponseEntity.created(URI.create("/teams/" + team.getId()))
+//                .body(repositoryTeam);
+//    }
 }
