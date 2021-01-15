@@ -1,7 +1,10 @@
 package com.unibuc.tournaments.service;
 
+import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
+import com.unibuc.tournaments.model.game.Game;
+import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
@@ -98,13 +101,13 @@ public class TournamentService {
 
         String firstPhase = "";
         if (teamsNo > 8) {
-            firstPhase = "roundOf" + teamsNo;
+            firstPhase = "round_of_" + teamsNo;
         } else if (teamsNo == 8) {
-            firstPhase = "quarterFinals";
+            firstPhase = "quarter_finals";
         } else if (teamsNo == 4) {
-            firstPhase = "semiFinals";
+            firstPhase = "semi_finals";
         } else if (teamsNo == 2) {
-            firstPhase = "grandFinal";
+            firstPhase = "grand_final";
         }
 
         Optional<Bracket> bracket = bracketRepository.createBracket(new Bracket(tournament.getId()));
@@ -155,5 +158,84 @@ public class TournamentService {
 
     public Bracket getTournamentBracket(int tournamentId) {
         return bracketRepository.getBracketByTournamentId(tournamentId);
+    }
+
+    public void deleteTournament(int id) {
+        if (tournamentRepository.getTournament(id).isEmpty()) {
+            throw new GenericNotFoundException(Tournament.class.getSimpleName());
+        }
+
+        try {
+            tournamentRepository.deleteTournament(id);
+        } catch (Exception e) {
+            System.out.println("Failed to delete tournament " + id);
+            e.printStackTrace();
+
+            throw new GenericForbiddenException("Deleting this tournament is not permitted.");
+        }
+    }
+
+
+    public Tournament updateTournament(int id, Tournament newTournament) {
+        Optional<Tournament> existingTournament = tournamentRepository.getTournament(id);
+        if (existingTournament.isEmpty()) {
+            throw new GenericNotFoundException(Tournament.class.getSimpleName());
+        }
+
+        newTournament.setId(existingTournament.get().getId());
+
+        if (newTournament.getStatus() == null) {
+            newTournament.setStatus(existingTournament.get().getStatus());
+        }
+        if (newTournament.getStartDate() == null) {
+            newTournament.setStartDate(existingTournament.get().getStartDate());
+        }
+        if (newTournament.getEndDate() == null) {
+            newTournament.setEndDate(existingTournament.get().getEndDate());
+        }
+        if (newTournament.getLocation() == null) {
+            newTournament.setLocation(existingTournament.get().getLocation());
+        }
+
+        Optional<Tournament> tournamentOptional = this.tournamentRepository.updateTournament(newTournament);
+        if (tournamentOptional.isPresent()) {
+            return tournamentOptional.get();
+        } else {
+            throw new GenericNotCreatedException(Tournament.class.getSimpleName());
+        }
+    }
+    public Match updateMatch(int id, Match newMatch) {
+        Optional<Match> existingMatch = matchRepository.getMatch(id);
+        if (existingMatch.isEmpty()) {
+            throw new GenericNotFoundException(Match.class.getSimpleName());
+        }
+
+        newMatch.setId(existingMatch.get().getId());
+
+        if (newMatch.getBestOf() == null) {
+            newMatch.setBestOf(existingMatch.get().getBestOf());
+        }
+        if (newMatch.getRedTeamScore() == null) {
+            newMatch.setRedTeamScore(existingMatch.get().getRedTeamScore());
+        }
+        if (newMatch.getBlueTeamScore() == null) {
+            newMatch.setBlueTeamScore(existingMatch.get().getBlueTeamScore());
+        }
+        if (newMatch.getStatus() == null) {
+            newMatch.setStatus(existingMatch.get().getStatus());
+        }
+        if (newMatch.getScheduledDate() == null) {
+            newMatch.setScheduledDate(existingMatch.get().getScheduledDate());
+        }
+        if (newMatch.getDefaultWin() == null) {
+            newMatch.setDefaultWin(existingMatch.get().getDefaultWin());
+        }
+
+        Optional<Match> matchOptional = this.matchRepository.updateMatch(newMatch);
+        if (matchOptional.isPresent()) {
+            return matchOptional.get();
+        } else {
+            throw new GenericNotCreatedException(Match.class.getSimpleName());
+        }
     }
 }

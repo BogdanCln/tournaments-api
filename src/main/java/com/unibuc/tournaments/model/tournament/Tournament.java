@@ -17,7 +17,6 @@ public class Tournament {
     private Date endDate;
     private String location;
     private List<Integer> teams;
-    private Dictionary<String, String> customFields;
 
     public Tournament(int gameId, String name, TournamentStatus status, Date startDate, Date endDate, String location, List<Integer> teams) {
         this.gameId = gameId;
@@ -115,13 +114,5 @@ public class Tournament {
 
     public void setTeams(List<Integer> teams) {
         this.teams = teams;
-    }
-
-    public Dictionary<String, String> getCustomFields() {
-        return customFields;
-    }
-
-    public void setCustomFields(Dictionary<String, String> customFields) {
-        this.customFields = customFields;
     }
 }

@@ -4,6 +4,7 @@ import com.unibuc.tournaments.dto.GameRequest;
 import com.unibuc.tournaments.mapper.GameMapper;
 import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.service.GameService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,4 +45,24 @@ public class GameController {
                 .body(repositoryGame);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteGame(@PathVariable int id) {
+        gameService.deleteGame(id);
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("Success");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateGame(
+            @PathVariable int id,
+            @Valid
+            @RequestBody GameRequest gameRequest) {
+
+        Game game = gameMapper.gameRequestToGame(gameRequest);
+        Game repositoryGame = gameService.updateGame(id, game);
+        return ResponseEntity.created(URI.create("/games/" + game.getId()))
+                .body(repositoryGame);
+    }
 }

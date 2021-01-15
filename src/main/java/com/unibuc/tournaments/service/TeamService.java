@@ -1,8 +1,10 @@
 package com.unibuc.tournaments.service;
 
 import com.unibuc.tournaments.exception.GenericAlreadyExistsException;
+import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
+import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberCategory;
@@ -75,6 +77,7 @@ public class TeamService {
         } else {
             throw new GenericNotCreatedException(TeamMember.class.getSimpleName());
         }
+
     }
 
     public TeamMember getTeamMember(int id) {
@@ -106,6 +109,67 @@ public class TeamService {
             return member.get();
         } else {
             throw new GenericNotCreatedException(TeamMemberCategory.class.getSimpleName());
+        }
+    }
+
+    public void deleteTeam(int id) {
+        if (teamRepository.getTeam(id).isEmpty()) {
+            throw new GenericNotFoundException(Team.class.getSimpleName());
+        }
+
+        try {
+            teamRepository.deleteTeam(id);
+        } catch (Exception e) {
+            System.out.println("Failed to delete team " + id);
+            e.printStackTrace();
+
+            throw new GenericForbiddenException("Deleting this team is not permitted.");
+        }
+    }
+
+    public Team updateTeam(int id, Team newTeam) {
+        Optional<Team> existingTeam = teamRepository.getTeam(id);
+        if (existingTeam.isEmpty()) {
+            throw new GenericNotFoundException(Team.class.getSimpleName());
+        }
+
+        newTeam.setId(existingTeam.get().getId());
+
+        Optional<Team> teamOptional = this.teamRepository.updateTeam(newTeam);
+        if (teamOptional.isPresent()) {
+            return teamOptional.get();
+        } else {
+            throw new GenericNotCreatedException(Team.class.getSimpleName());
+        }
+    }
+
+    public void deleteTeamMember(int id) {
+        if (teamMemberRepository.getTeamMember(id).isEmpty()) {
+            throw new GenericNotFoundException(TeamMember.class.getSimpleName());
+        }
+
+        try {
+            teamMemberRepository.deleteTeamMember(id);
+        } catch (Exception e) {
+            System.out.println("Failed to delete teamMember " + id);
+            e.printStackTrace();
+
+            throw new GenericForbiddenException("Deleting this team member is not permitted.");
+        }
+    }
+
+    public void deleteAllTeamMembers(int teamId) {
+        if (teamRepository.getTeam(teamId).isEmpty()) {
+            throw new GenericNotFoundException(Team.class.getSimpleName());
+        }
+
+        try {
+            teamMemberRepository.deleteTeamMembers(teamId);
+        } catch (Exception e) {
+            System.out.println("Failed to delete members for team " + teamId);
+            e.printStackTrace();
+
+            throw new GenericForbiddenException("Deleting the members of this team is not permitted.");
         }
     }
 }

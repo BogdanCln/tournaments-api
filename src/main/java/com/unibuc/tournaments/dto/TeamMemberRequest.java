@@ -9,13 +9,13 @@ public class TeamMemberRequest {
     @NotNull
     private TeamMemberType type;
     @NotNull
-    private int teamId;
+    private Integer teamId;
     private String firstName;
     private String lastName;
     private String nickName;
     private Date dateOfBirth;
 
-    public TeamMemberRequest(@NotNull TeamMemberType type, @NotNull int teamId, String firstName, String lastName, String nickName, Date dateOfBirth) {
+    public TeamMemberRequest(@NotNull TeamMemberType type, @NotNull Integer teamId, String firstName, String lastName, String nickName, Date dateOfBirth) {
         this.type = type;
         this.teamId = teamId;
         this.firstName = firstName;
@@ -32,11 +32,11 @@ public class TeamMemberRequest {
         this.type = type;
     }
 
-    public int getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 

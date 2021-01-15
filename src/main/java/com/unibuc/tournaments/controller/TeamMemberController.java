@@ -6,6 +6,7 @@ import com.unibuc.tournaments.mapper.TeamMapper;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberCategory;
 import com.unibuc.tournaments.service.TeamService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,5 +56,14 @@ public class TeamMemberController {
         TeamMember updatedMember = teamService.createTeamMemberCategory(teamMemberCategory);
         return ResponseEntity.created(URI.create("/teams/members/" + updatedMember.getId()))
                 .body(updatedMember);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTeamMember(@PathVariable int id) {
+        teamService.deleteTeamMember(id);
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("Success");
     }
 }

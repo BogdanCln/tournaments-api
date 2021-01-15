@@ -5,15 +5,20 @@ import javax.validation.constraints.NotNull;
 
 public class TeamRequest {
     @NotNull
-    private int gameId;
+    private Integer gameId;
     @NotBlank
     private String name;
 
-    public int getGameId() {
+    public TeamRequest(@NotNull Integer gameId, @NotBlank String name) {
+        this.gameId = gameId;
+        this.name = name;
+    }
+
+    public Integer getGameId() {
         return gameId;
     }
 
-    public void setGameId(int gameId) {
+    public void setGameId(Integer gameId) {
         this.gameId = gameId;
     }
 
@@ -22,11 +27,6 @@ public class TeamRequest {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public TeamRequest(@NotBlank int gameId, @NotBlank String name) {
-        this.gameId = gameId;
         this.name = name;
     }
 }

@@ -5,24 +5,33 @@ import java.util.Dictionary;
 
 public class Match {
     private int id;
-    private int bracketId;
+    private Integer bracketId;
     private String bracketPhase;
-    private int redTeamId;
-    private int blueTeamId;
-    private int bestOf;
-    private int redTeamScore;
-    private int blueTeamScore;
+    private Integer redTeamId;
+    private Integer blueTeamId;
+    private Integer bestOf;
+    private Integer redTeamScore;
+    private Integer blueTeamScore;
     private MatchStatus status;
     private Date scheduledDate;
     private Boolean defaultWin;
     private Dictionary<String, String> customFields;
 
-    public Match(int id, int bracketId, String bracketPhase, int redTeamId, int blueTeamId, int bestOf, int redTeamScore, int blueTeamScore, MatchStatus status, Date scheduledDate, Boolean defaultWin) {
+    public Match(int id, Integer bracketId, String bracketPhase, Integer redTeamId, Integer blueTeamId, Integer bestOf, Integer redTeamScore, Integer blueTeamScore, MatchStatus status, Date scheduledDate, Boolean defaultWin) {
         this.id = id;
         this.bracketId = bracketId;
         this.bracketPhase = bracketPhase;
         this.redTeamId = redTeamId;
         this.blueTeamId = blueTeamId;
+        this.bestOf = bestOf;
+        this.redTeamScore = redTeamScore;
+        this.blueTeamScore = blueTeamScore;
+        this.status = status;
+        this.scheduledDate = scheduledDate;
+        this.defaultWin = defaultWin;
+    }
+
+    public Match(Integer bestOf, Integer redTeamScore, Integer blueTeamScore, MatchStatus status, Date scheduledDate, Boolean defaultWin) {
         this.bestOf = bestOf;
         this.redTeamScore = redTeamScore;
         this.blueTeamScore = blueTeamScore;
@@ -39,11 +48,11 @@ public class Match {
         this.id = id;
     }
 
-    public int getBracketId() {
+    public Integer getBracketId() {
         return bracketId;
     }
 
-    public void setBracketId(int bracketId) {
+    public void setBracketId(Integer bracketId) {
         this.bracketId = bracketId;
     }
 
@@ -55,43 +64,43 @@ public class Match {
         this.bracketPhase = bracketPhase;
     }
 
-    public int getRedTeamId() {
+    public Integer getRedTeamId() {
         return redTeamId;
     }
 
-    public void setRedTeamId(int redTeamId) {
+    public void setRedTeamId(Integer redTeamId) {
         this.redTeamId = redTeamId;
     }
 
-    public int getBlueTeamId() {
+    public Integer getBlueTeamId() {
         return blueTeamId;
     }
 
-    public void setBlueTeamId(int blueTeamId) {
+    public void setBlueTeamId(Integer blueTeamId) {
         this.blueTeamId = blueTeamId;
     }
 
-    public int getBestOf() {
+    public Integer getBestOf() {
         return bestOf;
     }
 
-    public void setBestOf(int bestOf) {
+    public void setBestOf(Integer bestOf) {
         this.bestOf = bestOf;
     }
 
-    public int getRedTeamScore() {
+    public Integer getRedTeamScore() {
         return redTeamScore;
     }
 
-    public void setRedTeamScore(int redTeamScore) {
+    public void setRedTeamScore(Integer redTeamScore) {
         this.redTeamScore = redTeamScore;
     }
 
-    public int getBlueTeamScore() {
+    public Integer getBlueTeamScore() {
         return blueTeamScore;
     }
 
-    public void setBlueTeamScore(int blueTeamScore) {
+    public void setBlueTeamScore(Integer blueTeamScore) {
         this.blueTeamScore = blueTeamScore;
     }
 

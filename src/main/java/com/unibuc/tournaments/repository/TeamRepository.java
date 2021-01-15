@@ -1,6 +1,5 @@
 package com.unibuc.tournaments.repository;
 
-import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.Team;
@@ -49,6 +48,21 @@ public class TeamRepository {
         return getTeam(Objects.requireNonNull(generatedKeyHolder.getKey()).intValue());
     }
 
+    public Optional<Team> updateTeam(Team team) {
+        String query = "UPDATE team SET name = ?, game_id = ? WHERE id = ?";
+        PreparedStatementCreator preparedStatementCreator = (connection) -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setObject(1, team.getName());
+            preparedStatement.setObject(2, team.getGameId());
+            preparedStatement.setObject(3, team.getId());
+            return preparedStatement;
+        };
+
+        jdbcTemplate.update(preparedStatementCreator);
+
+        return getTeam(team.getId());
+    }
+
     public Optional<Team> getTeam(int id) {
         String query = "SELECT * FROM team WHERE id = ?";
         List<Team> dbTeams = jdbcTemplate.query(query, teamMapper, id);
@@ -83,5 +97,10 @@ public class TeamRepository {
             team.setMembers(teamMemberRepository.getTeamMembersFiltered(team.getId(), null));
         }
         return teams;
+    }
+
+    public void deleteTeam(int id) {
+        String query = "DELETE FROM team WHERE id = ?";
+        jdbcTemplate.update(query, id);
     }
 }

@@ -134,4 +134,14 @@ public class TeamMemberRepository {
         String query = "SELECT * FROM team_member_category WHERE member_id = ?";
         return jdbcTemplate.query(query, teamMemberCategoryMapper, teamMemberId);
     }
+
+    public void deleteTeamMember(int id) {
+        String query = "DELETE FROM team_member WHERE id = ?";
+        jdbcTemplate.update(query, id);
+    }
+
+    public void deleteTeamMembers(int teamId) {
+        String query = "DELETE FROM team_member WHERE team_id = ?";
+        jdbcTemplate.update(query, teamId);
+    }
 }

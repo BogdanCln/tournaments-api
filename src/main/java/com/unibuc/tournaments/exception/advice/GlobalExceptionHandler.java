@@ -1,6 +1,7 @@
 package com.unibuc.tournaments.exception.advice;
 
 import com.unibuc.tournaments.exception.GenericAlreadyExistsException;
+import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handle(GenericAlreadyExistsException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
+    @ExceptionHandler(GenericForbiddenException.class)
+    public ResponseEntity<String> handle(GenericForbiddenException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
                 .body(e.getMessage() + " at " + LocalDateTime.now());
     }
 

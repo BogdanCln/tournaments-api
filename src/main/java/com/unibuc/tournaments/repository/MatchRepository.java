@@ -2,6 +2,7 @@ package com.unibuc.tournaments.repository;
 
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
+import com.unibuc.tournaments.model.tournament.Tournament;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -71,5 +72,30 @@ public class MatchRepository {
         } else {
             return Optional.empty();
         }
+    }
+
+    public Optional<Match> updateMatch(Match match) {
+        String query = "UPDATE tournament_match SET " +
+                "best_of = ?, " +
+                "red_team_score = ?, " +
+                "blue_team_score = ?," +
+                "status = ?," +
+                "scheduled_date = ?," +
+                "default_win = ? WHERE id = ?";
+        PreparedStatementCreator preparedStatementCreator = (connection) -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, match.getBestOf());
+            preparedStatement.setInt(2, match.getRedTeamScore());
+            preparedStatement.setInt(3, match.getBlueTeamScore());
+            preparedStatement.setString(4, match.getStatus().toString());
+            preparedStatement.setDate(5, (Date) match.getScheduledDate());
+            preparedStatement.setBoolean(6, match.getDefaultWin());
+            preparedStatement.setInt(7, match.getId());
+            return preparedStatement;
+        };
+
+        jdbcTemplate.update(preparedStatementCreator);
+
+        return getMatch(match.getId());
     }
 }

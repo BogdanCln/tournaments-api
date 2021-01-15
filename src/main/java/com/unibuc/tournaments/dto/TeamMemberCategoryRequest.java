@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 public class TeamMemberCategoryRequest {
     @NotNull
-    private int memberId;
+    private Integer memberId;
     @NotNull
     private String name;
 
@@ -16,7 +16,7 @@ public class TeamMemberCategoryRequest {
         return name;
     }
 
-    public TeamMemberCategoryRequest(@NotNull int memberId, @NotNull String name) {
+    public TeamMemberCategoryRequest(@NotNull Integer memberId, @NotNull String name) {
         this.memberId = memberId;
         this.name = name;
     }

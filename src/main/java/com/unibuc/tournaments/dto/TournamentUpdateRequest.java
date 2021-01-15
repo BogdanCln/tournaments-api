@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
-public class TournamentRequest {
+public class TournamentUpdateRequest {
     @NotNull
     private Integer gameId;
 
@@ -20,21 +20,19 @@ public class TournamentRequest {
     // https://www.baeldung.com/javax-validations-enums
     private TournamentStatus status;
 
-    @Size(min = 2, max = 4096)
-    private List<Integer> teams;
-
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private Date startDate;
+
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private Date endDate;
+
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private String location;
 
-    public TournamentRequest(@NotNull Integer gameId, @NotBlank(message = "name not provided") String name, TournamentStatus status, @Size(min = 2) List<Integer> teams, Date startDate, Date endDate, String location) {
+    public TournamentUpdateRequest(@NotNull Integer gameId, @NotBlank(message = "name not provided") String name, TournamentStatus status, Date startDate, Date endDate, String location) {
         this.gameId = gameId;
         this.name = name;
         this.status = status;
-        this.teams = teams;
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
@@ -62,14 +60,6 @@ public class TournamentRequest {
 
     public void setStatus(TournamentStatus status) {
         this.status = status;
-    }
-
-    public List<Integer> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(List<Integer> teams) {
-        this.teams = teams;
     }
 
     public Date getStartDate() {

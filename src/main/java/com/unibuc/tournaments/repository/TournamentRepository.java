@@ -1,5 +1,6 @@
 package com.unibuc.tournaments.repository;
 
+import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.tournament.Tournament;
 import com.unibuc.tournaments.model.tournament.TournamentStatus;
@@ -126,5 +127,30 @@ public class TournamentRepository {
         }
 
         return tournaments;
+    }
+
+    public Optional<Tournament> updateTournament(Tournament tournament) {
+        String query = "UPDATE tournament SET " +
+                "game_id = ?, " +
+                "name = ?, " +
+                "status = ?," +
+                "start_date = ?," +
+                "end_date = ?," +
+                "location = ? WHERE id = ?";
+        PreparedStatementCreator preparedStatementCreator = (connection) -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, tournament.getGameId());
+            preparedStatement.setString(2, tournament.getName());
+            preparedStatement.setString(3, tournament.getStatus().toString());
+            preparedStatement.setDate(4, (Date) tournament.getStartDate());
+            preparedStatement.setDate(5, (Date) tournament.getEndDate());
+            preparedStatement.setString(6, tournament.getLocation());
+            preparedStatement.setInt(7, tournament.getId());
+            return preparedStatement;
+        };
+
+        jdbcTemplate.update(preparedStatementCreator);
+
+        return getTournament(tournament.getId());
     }
 }

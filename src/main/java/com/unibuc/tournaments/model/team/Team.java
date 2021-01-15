@@ -23,6 +23,10 @@ public class Team {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getGameId() {
         return gameId;
     }
