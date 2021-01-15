@@ -4,10 +4,8 @@ import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.repository.GameRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;

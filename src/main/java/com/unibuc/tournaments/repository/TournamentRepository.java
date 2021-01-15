@@ -1,7 +1,5 @@
 package com.unibuc.tournaments.repository;
 
-import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.tournament.Tournament;
 import com.unibuc.tournaments.model.tournament.TournamentStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;

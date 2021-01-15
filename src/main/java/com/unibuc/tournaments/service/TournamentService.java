@@ -3,8 +3,6 @@ package com.unibuc.tournaments.service;
 import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
-import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
@@ -14,6 +12,7 @@ import com.unibuc.tournaments.repository.MatchRepository;
 import com.unibuc.tournaments.repository.TournamentRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -33,6 +32,7 @@ public class TournamentService {
         return number > 0 && ((number & (number - 1)) == 0);
     }
 
+    @Transactional()
     public Tournament createTournament(Tournament tournament) {
         if (!isPowerOfTwo(tournament.getTeams().size())) {
             throw new GenericNotCreatedException(Tournament.class.getSimpleName());
@@ -66,10 +66,11 @@ public class TournamentService {
                 generateInitialBracket(tournamentCreated);
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("generateInitialBracket() failed for new tournament");
 
                 // Clean up: Delete created tournament since bracket initiation failed
-                System.out.println("generateInitialBracket() failed for new tournament - deleting tournament");
-                tournamentRepository.deleteTournament(tournamentCreated.getId());
+//                System.out.println("generateInitialBracket() failed for new tournament - deleting tournament");
+//                tournamentRepository.deleteTournament(tournamentCreated.getId());
 
                 throw new GenericNotCreatedException(Tournament.class.getSimpleName());
             }
@@ -204,6 +205,7 @@ public class TournamentService {
             throw new GenericNotCreatedException(Tournament.class.getSimpleName());
         }
     }
+
     public Match updateMatch(int id, Match newMatch) {
         Optional<Match> existingMatch = matchRepository.getMatch(id);
         if (existingMatch.isEmpty()) {
@@ -232,10 +234,35 @@ public class TournamentService {
         }
 
         Optional<Match> matchOptional = this.matchRepository.updateMatch(newMatch);
+
+//        String phaseName = newMatch.getBracketPhase();
+//        if (phaseName != "grand_final") {
+//            Boolean phaseEnded = isPhaseEnded(newMatch.getBracketId(), newMatch.getBracketPhase());
+//            if (phaseEnded) {
+        // Check if current phase is the most advanced one into the bracket
+        // If true, generate next bracket phase
+//            }
+//        }
+
         if (matchOptional.isPresent()) {
             return matchOptional.get();
         } else {
             throw new GenericNotCreatedException(Match.class.getSimpleName());
         }
+    }
+
+    private Boolean isPhaseEnded(Integer bracketId, String bracketPhase) {
+        Map<String, List<Match>> phases = bracketRepository.getBracketPhases(bracketId);
+        for (Map.Entry<String, List<Match>> entry : phases.entrySet()) {
+            if (entry.getKey() != bracketPhase) {
+                for (Match match : entry.getValue()) {
+                    if (match.getStatus() != MatchStatus.FINISHED) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }

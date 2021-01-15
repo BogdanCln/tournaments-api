@@ -2,7 +2,6 @@ package com.unibuc.tournaments.repository;
 
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
-import com.unibuc.tournaments.model.tournament.Tournament;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
