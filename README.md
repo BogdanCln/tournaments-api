@@ -1,5 +1,5 @@
 # tournaments-api
-Spring Boot REST API made for educational purpose
+Spring Boot REST API made for educational purpose - https://fmi.unibuc.ro/ 
 ___
 Project scoring condition:
 
