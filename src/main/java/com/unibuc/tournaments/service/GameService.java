@@ -23,7 +23,7 @@ public class GameService {
         if (gameOptional.isPresent()) {
             return gameOptional.get();
         } else {
-            throw new GenericNotCreatedException(Game.class.getName());
+            throw new GenericNotCreatedException(Game.class.getSimpleName());
         }
     }
 
@@ -32,7 +32,7 @@ public class GameService {
         if (gameOptional.isPresent()) {
             return gameOptional.get();
         } else {
-            throw new GenericNotFoundException(Game.class.getName());
+            throw new GenericNotFoundException(Game.class.getSimpleName());
         }
     }
 

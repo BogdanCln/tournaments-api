@@ -32,7 +32,7 @@ public class TeamRepository {
     public Optional<Team> createTeam(Team team) {
         Boolean gameExists = jdbcTemplate.queryForObject("select exists(select id from game where id = ?)", Boolean.class, team.getGameId());
         if (gameExists != null && !gameExists) {
-            throw new GenericNotFoundException(Game.class.getName());
+            throw new GenericNotFoundException(Game.class.getSimpleName());
         }
 
         String query = "INSERT INTO team VALUES(?, ?, ?)";

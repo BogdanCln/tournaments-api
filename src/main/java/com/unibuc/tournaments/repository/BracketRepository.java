@@ -1,7 +1,9 @@
 package com.unibuc.tournaments.repository;
 
+import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Match;
+import com.unibuc.tournaments.model.tournament.Tournament;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -51,6 +53,19 @@ public class BracketRepository {
             return Optional.of(bracket);
         } else {
             return Optional.empty();
+        }
+    }
+
+    public Bracket getBracketByTournamentId(int tournamentId) {
+        String query = "SELECT * FROM bracket WHERE tournament_id = ?";
+        List<Bracket> dbBrackets = jdbcTemplate.query(query, bracketMapper, tournamentId);
+
+        if (!dbBrackets.isEmpty()) {
+            Bracket bracket = dbBrackets.get(0);
+            bracket.setPhases(getBracketPhases(bracket.getId()));
+            return bracket;
+        } else {
+            throw new GenericNotFoundException(Bracket.class.getSimpleName());
         }
     }
 

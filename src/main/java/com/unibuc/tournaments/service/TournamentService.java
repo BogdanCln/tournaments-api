@@ -11,6 +11,7 @@ import com.unibuc.tournaments.repository.MatchRepository;
 import com.unibuc.tournaments.repository.TournamentRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 
 @Service
@@ -31,7 +32,7 @@ public class TournamentService {
 
     public Tournament createTournament(Tournament tournament) {
         if (!isPowerOfTwo(tournament.getTeams().size())) {
-            throw new GenericNotCreatedException(tournament.getClass().getName());
+            throw new GenericNotCreatedException(Tournament.class.getSimpleName());
         }
 
         Optional<Tournament> tournamentOptional;
@@ -39,13 +40,15 @@ public class TournamentService {
             tournamentOptional = this.tournamentRepository.createTournament(tournament);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
-            throw new GenericNotCreatedException(tournament.getClass().getName());
+            throw new GenericNotCreatedException(Tournament.class.getSimpleName());
         }
         if (tournamentOptional.isPresent()) {
             Tournament tournamentCreated = tournamentOptional.get();
 
             try {
                 populateTournamentTeams(tournamentCreated.getId(), tournament.getTeams());
+                // Updated with teams
+                tournamentCreated = this.tournamentRepository.getTournament(tournamentCreated.getId()).get();
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -53,12 +56,11 @@ public class TournamentService {
                 System.out.println("populateTournamentTeams() failed for new tournament - deleting tournament");
                 tournamentRepository.deleteTournament(tournamentCreated.getId());
 
-                throw new GenericNotCreatedException(tournament.getClass().getName());
+                throw new GenericNotCreatedException(Tournament.class.getSimpleName());
             }
 
             try {
-                // Pass tournament, tournamentCreated does not contain teams yet (no need to do another transaction yet_
-                generateInitialBracket(tournament);
+                generateInitialBracket(tournamentCreated);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -66,13 +68,13 @@ public class TournamentService {
                 System.out.println("generateInitialBracket() failed for new tournament - deleting tournament");
                 tournamentRepository.deleteTournament(tournamentCreated.getId());
 
-                throw new GenericNotCreatedException(tournament.getClass().getName());
+                throw new GenericNotCreatedException(Tournament.class.getSimpleName());
             }
 
             // Updated with teams list
             return getTournament(tournamentCreated.getId());
         } else {
-            throw new GenericNotCreatedException(tournament.getClass().getName());
+            throw new GenericNotCreatedException(Tournament.class.getSimpleName());
         }
     }
 
@@ -87,7 +89,7 @@ public class TournamentService {
         if (tournamentOptional.isPresent()) {
             return tournamentOptional.get();
         } else {
-            throw new GenericNotFoundException(Tournament.class.getName());
+            throw new GenericNotFoundException(Tournament.class.getSimpleName());
         }
     }
 
@@ -107,16 +109,12 @@ public class TournamentService {
 
         Optional<Bracket> bracket = bracketRepository.createBracket(new Bracket(tournament.getId()));
 
-        List<Match> firstRoundMatches = generateInitialMatchups(
+        generateInitialMatchups(
                 tournament.getTeams(),
                 bracket.get().getId(),
                 firstPhase,
                 1
         );
-
-        for (Match match : firstRoundMatches) {
-            matchRepository.createMatch(match);
-        }
     }
 
     /**
@@ -153,5 +151,9 @@ public class TournamentService {
 
     public List<Tournament> getTournamentsFiltered(String name, Integer gameId) {
         return tournamentRepository.getTournamentFiltered(name, gameId);
+    }
+
+    public Bracket getTournamentBracket(int tournamentId) {
+        return bracketRepository.getBracketByTournamentId(tournamentId);
     }
 }

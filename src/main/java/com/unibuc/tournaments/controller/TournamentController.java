@@ -2,6 +2,7 @@ package com.unibuc.tournaments.controller;
 
 import com.unibuc.tournaments.dto.TournamentRequest;
 import com.unibuc.tournaments.mapper.TournamentMapper;
+import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Tournament;
 import com.unibuc.tournaments.service.TournamentService;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,11 @@ public class TournamentController {
     @GetMapping("/{id}")
     public Tournament getTournament(@PathVariable int id) {
         return tournamentService.getTournament(id);
+    }
+
+    @GetMapping("/{id}/bracket")
+    public Bracket getTournamentBracket(@PathVariable int id) {
+        return tournamentService.getTournamentBracket(id);
     }
 
     @PostMapping()

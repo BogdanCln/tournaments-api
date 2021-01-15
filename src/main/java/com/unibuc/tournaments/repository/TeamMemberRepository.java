@@ -44,7 +44,7 @@ public class TeamMemberRepository {
     public Optional<TeamMember> createTeamMember(TeamMember teamMember) {
         Boolean teamExists = jdbcTemplate.queryForObject("select exists(select id from team where id = ?)", Boolean.class, teamMember.getTeamId());
         if (teamExists != null && !teamExists) {
-            throw new GenericNotFoundException(Team.class.getName());
+            throw new GenericNotFoundException(Team.class.getSimpleName());
         }
 
         String query = "INSERT INTO team_member VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -105,7 +105,7 @@ public class TeamMemberRepository {
     public Optional<TeamMember> createTeamMemberCategory(TeamMemberCategory category) {
         Boolean memberExists = jdbcTemplate.queryForObject("select exists(select id from team_member where id = ?)", Boolean.class, category.getMemberId());
         if (memberExists != null && !memberExists) {
-            throw new GenericNotFoundException(TeamMember.class.getName());
+            throw new GenericNotFoundException(TeamMember.class.getSimpleName());
         }
 
         Boolean categoryExists = jdbcTemplate.queryForObject("select exists(select id from team_member_category where member_id = ? AND name = ?)",
@@ -113,7 +113,7 @@ public class TeamMemberRepository {
                 category.getMemberId(),
                 category.getName());
         if (categoryExists != null && categoryExists) {
-            throw new GenericNotCreatedException(TeamMemberCategory.class.getName());
+            throw new GenericNotCreatedException(TeamMemberCategory.class.getSimpleName());
         }
 
         String query = "INSERT INTO team_member_category VALUES(?, ?, ?)";
