@@ -1,5 +1,7 @@
 package com.unibuc.tournaments.exception.advice;
 
+import com.unibuc.tournaments.exception.GenericNotCreatedException;
+import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.exception.game.GameNotCreatedException;
 import com.unibuc.tournaments.exception.game.GameNotFoundException;
 import com.unibuc.tournaments.exception.team.*;
@@ -70,6 +72,22 @@ public class GlobalExceptionHandler {
                 .body(e.getMessage() + " at " + LocalDateTime.now());
     }
 
+    // TODO: Remove all NotFoundException's
+    @ExceptionHandler({GenericNotFoundException.class})
+    public ResponseEntity<String> handle(GenericNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
+    // TODO: Remove all NotCreatedException's
+    @ExceptionHandler({GenericNotCreatedException.class})
+    public ResponseEntity<String> handle(GenericNotCreatedException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + " at " + LocalDateTime.now());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handle(MethodArgumentNotValidException e) {
         return ResponseEntity.badRequest()
@@ -77,5 +95,6 @@ public class GlobalExceptionHandler {
                         " for field " + e.getFieldError().getField() +
                         " with message " + e.getFieldError().getDefaultMessage());
     }
+
 
 }
