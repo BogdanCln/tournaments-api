@@ -14,9 +14,6 @@ public class GameRequest {
     // https://www.baeldung.com/javax-validations-enums
     private GameGenre genre;
 
-    public GameRequest() {
-    }
-
     public GameRequest(String publisherName, String name, GameGenre genre) {
         this.publisherName = publisherName;
         this.name = name;

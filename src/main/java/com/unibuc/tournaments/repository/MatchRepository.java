@@ -1,8 +1,5 @@
 package com.unibuc.tournaments.repository;
 
-import com.unibuc.tournaments.exception.team.TeamNotFoundException;
-import com.unibuc.tournaments.model.team.TeamMember;
-import com.unibuc.tournaments.model.team.TeamMemberType;
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,8 +1,7 @@
 package com.unibuc.tournaments.repository;
 
-import com.unibuc.tournaments.exception.team.TeamMemberCategoryNotCreatedException;
-import com.unibuc.tournaments.exception.team.TeamMemberNotFoundException;
-import com.unibuc.tournaments.exception.team.TeamNotFoundException;
+import com.unibuc.tournaments.exception.GenericNotCreatedException;
+import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberCategory;
@@ -44,8 +43,9 @@ public class TeamMemberRepository {
 
     public Optional<TeamMember> createTeamMember(TeamMember teamMember) {
         Boolean teamExists = jdbcTemplate.queryForObject("select exists(select id from team where id = ?)", Boolean.class, teamMember.getTeamId());
-        if (teamExists != null && !teamExists)
-            throw new TeamNotFoundException();
+        if (teamExists != null && !teamExists) {
+            throw new GenericNotFoundException(Team.class.getName());
+        }
 
         String query = "INSERT INTO team_member VALUES(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatementCreator preparedStatementCreator = (connection) -> {
@@ -104,15 +104,17 @@ public class TeamMemberRepository {
 
     public Optional<TeamMember> createTeamMemberCategory(TeamMemberCategory category) {
         Boolean memberExists = jdbcTemplate.queryForObject("select exists(select id from team_member where id = ?)", Boolean.class, category.getMemberId());
-        if (memberExists != null && !memberExists)
-            throw new TeamMemberNotFoundException();
+        if (memberExists != null && !memberExists) {
+            throw new GenericNotFoundException(TeamMember.class.getName());
+        }
 
         Boolean categoryExists = jdbcTemplate.queryForObject("select exists(select id from team_member_category where member_id = ? AND name = ?)",
                 Boolean.class,
                 category.getMemberId(),
                 category.getName());
-        if (categoryExists != null && categoryExists)
-            throw new TeamMemberCategoryNotCreatedException();
+        if (categoryExists != null && categoryExists) {
+            throw new GenericNotCreatedException(TeamMemberCategory.class.getName());
+        }
 
         String query = "INSERT INTO team_member_category VALUES(?, ?, ?)";
         PreparedStatementCreator preparedStatementCreator = (connection) -> {

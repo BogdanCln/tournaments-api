@@ -2,9 +2,7 @@ package com.unibuc.tournaments.controller;
 
 import com.unibuc.tournaments.dto.TeamMemberCategoryRequest;
 import com.unibuc.tournaments.dto.TeamMemberRequest;
-import com.unibuc.tournaments.dto.TeamRequest;
 import com.unibuc.tournaments.mapper.TeamMapper;
-import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberCategory;
 import com.unibuc.tournaments.service.TeamService;

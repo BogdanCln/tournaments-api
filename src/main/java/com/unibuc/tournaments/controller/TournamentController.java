@@ -1,7 +1,6 @@
 package com.unibuc.tournaments.controller;
 
 import com.unibuc.tournaments.dto.TournamentRequest;
-import com.unibuc.tournaments.dto.TournamentRequest;
 import com.unibuc.tournaments.mapper.TournamentMapper;
 import com.unibuc.tournaments.model.tournament.Tournament;
 import com.unibuc.tournaments.service.TournamentService;
@@ -23,7 +22,7 @@ public class TournamentController {
         this.tournamentMapper = tournamentMapper;
     }
 
-        @GetMapping()
+    @GetMapping()
     public List<Tournament> getTournamentsFiltered(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer gameId) {

@@ -1,11 +1,9 @@
 package com.unibuc.tournaments.repository;
 
-import com.unibuc.tournaments.exception.game.GameNotFoundException;
-import com.unibuc.tournaments.exception.team.TeamNotFoundException;
+import com.unibuc.tournaments.exception.GenericNotCreatedException;
+import com.unibuc.tournaments.exception.GenericNotFoundException;
+import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.Team;
-import com.unibuc.tournaments.model.team.TeamMember;
-import com.unibuc.tournaments.model.team.TeamMemberType;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,7 +11,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.*;
 
@@ -34,8 +31,9 @@ public class TeamRepository {
 
     public Optional<Team> createTeam(Team team) {
         Boolean gameExists = jdbcTemplate.queryForObject("select exists(select id from game where id = ?)", Boolean.class, team.getGameId());
-        if (gameExists != null && !gameExists)
-            throw new GameNotFoundException();
+        if (gameExists != null && !gameExists) {
+            throw new GenericNotFoundException(Game.class.getName());
+        }
 
         String query = "INSERT INTO team VALUES(?, ?, ?)";
         PreparedStatementCreator preparedStatementCreator = (connection) -> {

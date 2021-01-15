@@ -2,10 +2,6 @@ package com.unibuc.tournaments.service;
 
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
-import com.unibuc.tournaments.exception.game.GameNotCreatedException;
-import com.unibuc.tournaments.exception.game.GameNotFoundException;
-import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
@@ -15,8 +11,6 @@ import com.unibuc.tournaments.repository.MatchRepository;
 import com.unibuc.tournaments.repository.TournamentRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 @Service

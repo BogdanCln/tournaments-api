@@ -1,8 +1,9 @@
 package com.unibuc.tournaments.service;
 
-import com.unibuc.tournaments.exception.game.GameNotCreatedException;
-import com.unibuc.tournaments.exception.game.GameNotFoundException;
+import com.unibuc.tournaments.exception.GenericNotCreatedException;
+import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.model.game.Game;
+import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class GameService {
         if (gameOptional.isPresent()) {
             return gameOptional.get();
         } else {
-            throw new GameNotCreatedException();
+            throw new GenericNotCreatedException(Game.class.getName());
         }
     }
 
@@ -31,7 +32,7 @@ public class GameService {
         if (gameOptional.isPresent()) {
             return gameOptional.get();
         } else {
-            throw new GameNotFoundException();
+            throw new GenericNotFoundException(Game.class.getName());
         }
     }
 
