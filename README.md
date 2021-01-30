@@ -1,7 +1,5 @@
 # tournaments-api
 Spring Boot REST API
-
-Functionalities: https://docs.google.com/document/d/1hpdSZUOL2zTD0e0VThgrmcwS3XfPAuZ76PKPap6Nnog/edit?usp=sharing
 ___
 Project scoring condition:
 
