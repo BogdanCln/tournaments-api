@@ -1,7 +1,10 @@
 package com.unibuc.tournaments.model.team;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data()
 public class Team {
     private int id;
     private int gameId;
@@ -17,37 +20,5 @@ public class Team {
         this.id = id;
         this.gameId = gameId;
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<TeamMember> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<TeamMember> members) {
-        this.members = members;
     }
 }

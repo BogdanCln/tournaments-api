@@ -1,4 +1,4 @@
-# This is not organised at all
+-- This is not organised at all
 
 create table game
 (

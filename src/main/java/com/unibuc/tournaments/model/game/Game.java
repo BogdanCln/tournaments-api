@@ -1,7 +1,10 @@
 package com.unibuc.tournaments.model.game;
 
+import lombok.Data;
+
 import java.util.Objects;
 
+@Data()
 public class Game {
     private int id;
     private String name;
@@ -30,37 +33,5 @@ public class Game {
                 ", publisherName='" + publisherName + '\'' +
                 ", genre=" + genre +
                 '}';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPublisherName() {
-        return publisherName;
-    }
-
-    public void setPublisherName(String publisherName) {
-        this.publisherName = publisherName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public GameGenre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(GameGenre genre) {
-        this.genre = genre;
     }
 }

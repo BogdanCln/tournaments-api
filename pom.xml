@@ -12,7 +12,7 @@
     <artifactId>tournaments</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tournaments</name>
-    <description>Single Elimination Tournaments REST API</description>
+    <description>Single Elimination Tournaments Web App</description>
 
     <properties>
         <java.version>11</java.version>
@@ -54,6 +54,10 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
         <!--  SWAGGER dependencies -->
     </dependencies>
 
@@ -62,6 +66,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
