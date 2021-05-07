@@ -1,16 +1,14 @@
-package com.unibuc.tournaments.controller;
+package com.unibuc.tournaments.controller_orig;
 
-import com.unibuc.tournaments.dto.GameRequest;
 import com.unibuc.tournaments.dto.MatchUpdateRequest;
 import com.unibuc.tournaments.dto.TournamentRequest;
 import com.unibuc.tournaments.dto.TournamentUpdateRequest;
-import com.unibuc.tournaments.mapper.MatchMapper;
-import com.unibuc.tournaments.mapper.TournamentMapper;
-import com.unibuc.tournaments.model.game.Game;
+import com.unibuc.tournaments.mapper_orig.MatchMapper;
+import com.unibuc.tournaments.mapper_orig.TournamentMapper;
 import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.Tournament;
-import com.unibuc.tournaments.service.TournamentService;
+import com.unibuc.tournaments.service_orig.TournamentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

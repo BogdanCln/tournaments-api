@@ -1,4 +1,4 @@
-package com.unibuc.tournaments.repository;
+package com.unibuc.tournaments.repository_orig;
 
 import com.unibuc.tournaments.model.tournament.Tournament;
 import com.unibuc.tournaments.model.tournament.TournamentStatus;

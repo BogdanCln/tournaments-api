@@ -1,10 +1,10 @@
-package com.unibuc.tournaments.service;
+package com.unibuc.tournaments.service_orig;
 
 import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
 import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.repository.GameRepository;
+import com.unibuc.tournaments.repository_orig.GameRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

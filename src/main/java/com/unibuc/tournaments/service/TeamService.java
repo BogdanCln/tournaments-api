@@ -1,15 +1,14 @@
-package com.unibuc.tournaments.service;
+package com.unibuc.tournaments.service_orig;
 
 import com.unibuc.tournaments.exception.GenericAlreadyExistsException;
 import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;
-import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.Team;
 import com.unibuc.tournaments.model.team.TeamMember;
 import com.unibuc.tournaments.model.team.TeamMemberCategory;
-import com.unibuc.tournaments.repository.TeamMemberRepository;
-import com.unibuc.tournaments.repository.TeamRepository;
+import com.unibuc.tournaments.repository_orig.TeamMemberRepository;
+import com.unibuc.tournaments.repository_orig.TeamRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 

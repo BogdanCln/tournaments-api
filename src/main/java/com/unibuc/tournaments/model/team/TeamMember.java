@@ -2,36 +2,31 @@ package com.unibuc.tournaments.model.team;
 
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Data()
+@Data
+@Entity
+@Table(name = "team_member")
 public class TeamMember {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     private TeamMemberType type;
     private String firstName;
     private String lastName;
     private String nickName;
     private Date dateOfBirth;
+
+    @ManyToMany
+    @JoinTable(name = "team_member_category",
+            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "team_member_category_id", referencedColumnName = "id"))
     private List<TeamMemberCategory> categories;
-
-    public TeamMember(int teamId, TeamMemberType type, String firstName, String lastName, String nickName, Date dateOfBirth) {
-        this.teamId = teamId;
-        this.type = type;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nickName = nickName;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public TeamMember(int id, int teamId, TeamMemberType type, String firstName, String lastName, String nickName, Date dateOfBirth) {
-        this.id = id;
-        this.teamId = teamId;
-        this.type = type;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nickName = nickName;
-        this.dateOfBirth = dateOfBirth;
-    }
 }

@@ -1,56 +1,35 @@
 package com.unibuc.tournaments.model.tournament;
 
+import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.Team;
 import lombok.Data;
 
-import java.sql.Array;
-import java.sql.SQLException;
+import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-@Data()
+@Data
+@Entity
 public class Tournament {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int gameId;
+
+    @OneToOne
+    private Game game;
+
     private String name;
     private TournamentStatus status;
     private Date startDate;
     private Date endDate;
     private String location;
-    private List<Integer> teams;
 
-    public Tournament(int gameId, String name, TournamentStatus status, Date startDate, Date endDate, String location, List<Integer> teams) {
-        this.gameId = gameId;
-        this.name = name;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.location = location;
-        this.teams = teams;
-    }
+    @ManyToMany
+    @JoinTable(name = "tournament_team",
+            joinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tournament_id", referencedColumnName = "id"))
+    private List<Team> teams;
 
-    public Tournament(int id, int gameId, String name, TournamentStatus status, Date startDate, Date endDate, String location) {
-        this.id = id;
-        this.gameId = gameId;
-        this.name = name;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.location = location;
-    }
-
-    public Tournament(int id, int gameId, String name, TournamentStatus status, Date startDate, Date endDate, String location, String teams) {
-        this.id = id;
-        this.gameId = gameId;
-        this.name = name;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.location = location;
-        if (teams != null) {
-            List<String> stringList = Arrays.asList(teams.split("\\s*,\\s*"));
-            this.teams = stringList.stream().map(Integer::parseInt).collect(Collectors.toList());
-        }
-    }
+    @OneToMany(mappedBy = "tournament")
+    List<Bracket> brackets;
 }

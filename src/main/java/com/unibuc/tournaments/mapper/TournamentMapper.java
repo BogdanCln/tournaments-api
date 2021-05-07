@@ -1,4 +1,4 @@
-package com.unibuc.tournaments.mapper;
+package com.unibuc.tournaments.mapper_orig;
 
 import com.unibuc.tournaments.dto.TournamentRequest;
 import com.unibuc.tournaments.dto.TournamentUpdateRequest;

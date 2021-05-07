@@ -1,24 +1,28 @@
 package com.unibuc.tournaments.model.team;
 
+import com.unibuc.tournaments.model.game.Game;
+import com.unibuc.tournaments.model.tournament.Tournament;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.List;
 
-@Data()
+@Data
+@Entity
 public class Team {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int gameId;
+
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
+
+    @OneToMany(mappedBy = "team")
     private List<TeamMember> members;
 
-    public Team(int gameId, String name) {
-        this.gameId = gameId;
-        this.name = name;
-    }
-
-    public Team(int id, int gameId, String name) {
-        this.id = id;
-        this.gameId = gameId;
-        this.name = name;
-    }
+    @ManyToMany(mappedBy = "teams")
+    private List<Tournament> tournaments;
 }

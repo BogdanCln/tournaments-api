@@ -1,9 +1,9 @@
-package com.unibuc.tournaments.controller;
+package com.unibuc.tournaments.controller_orig;
 
 import com.unibuc.tournaments.dto.GameRequest;
-import com.unibuc.tournaments.mapper.GameMapper;
+import com.unibuc.tournaments.mapper_orig.GameMapper;
 import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.service.GameService;
+import com.unibuc.tournaments.service_orig.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

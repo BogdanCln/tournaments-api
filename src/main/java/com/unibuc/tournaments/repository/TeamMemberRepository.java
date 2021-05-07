@@ -1,4 +1,4 @@
-package com.unibuc.tournaments.repository;
+package com.unibuc.tournaments.repository_orig;
 
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
 import com.unibuc.tournaments.exception.GenericNotFoundException;

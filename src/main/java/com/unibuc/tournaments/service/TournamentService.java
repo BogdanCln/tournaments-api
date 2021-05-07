@@ -1,4 +1,4 @@
-package com.unibuc.tournaments.service;
+package com.unibuc.tournaments.service_orig;
 
 import com.unibuc.tournaments.exception.GenericForbiddenException;
 import com.unibuc.tournaments.exception.GenericNotCreatedException;
@@ -7,9 +7,9 @@ import com.unibuc.tournaments.model.tournament.Bracket;
 import com.unibuc.tournaments.model.tournament.Match;
 import com.unibuc.tournaments.model.tournament.MatchStatus;
 import com.unibuc.tournaments.model.tournament.Tournament;
-import com.unibuc.tournaments.repository.BracketRepository;
-import com.unibuc.tournaments.repository.MatchRepository;
-import com.unibuc.tournaments.repository.TournamentRepository;
+import com.unibuc.tournaments.repository_orig.BracketRepository;
+import com.unibuc.tournaments.repository_orig.MatchRepository;
+import com.unibuc.tournaments.repository_orig.TournamentRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

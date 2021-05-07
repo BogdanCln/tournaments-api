@@ -2,20 +2,19 @@ package com.unibuc.tournaments.model.team;
 
 import lombok.Data;
 
-@Data()
+import javax.persistence.*;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "team_member_category")
 public class TeamMemberCategory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int memberId;
+
     private String name;
 
-    public TeamMemberCategory(int id, int memberId, String name) {
-        this.id = id;
-        this.memberId = memberId;
-        this.name = name;
-    }
-
-    public TeamMemberCategory(int memberId, String name) {
-        this.memberId = memberId;
-        this.name = name;
-    }
+    @ManyToMany(mappedBy = "categories")
+    private List<TeamMember> teamMembers;
 }

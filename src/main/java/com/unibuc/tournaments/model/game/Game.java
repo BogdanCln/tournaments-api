@@ -1,37 +1,22 @@
 package com.unibuc.tournaments.model.game;
 
+import com.unibuc.tournaments.model.team.Team;
 import lombok.Data;
 
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.List;
 
-@Data()
+@Data
+@Entity
 public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
     private String publisherName;
     private GameGenre genre;
 
-    public Game(int id, String name, String publisherName, GameGenre genre) {
-        this.id = id;
-        this.name = name;
-        this.publisherName = publisherName;
-        this.genre = Objects.requireNonNullElse(genre, GameGenre.NONE);
-    }
-
-    public Game(String name, String publisherName, GameGenre genre) {
-        this.name = name;
-        this.publisherName = publisherName;
-        this.genre = genre;
-        this.genre = Objects.requireNonNullElse(genre, GameGenre.NONE);
-    }
-
-    @Override
-    public String toString() {
-        return "Game{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", publisherName='" + publisherName + '\'' +
-                ", genre=" + genre +
-                '}';
-    }
+    @OneToMany(mappedBy = "game")
+    private List<Team> teams;
 }
