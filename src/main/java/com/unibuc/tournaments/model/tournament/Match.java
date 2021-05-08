@@ -24,7 +24,10 @@ public class Match {
     private Integer bestOf;
     private Integer redTeamScore;
     private Integer blueTeamScore;
+
+    @Enumerated(value = EnumType.STRING)
     private MatchStatus status;
+
     private Date scheduledDate;
     private Boolean defaultWin;
 }

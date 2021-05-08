@@ -1,68 +1,76 @@
-package com.unibuc.tournaments.controller_orig;
+package com.unibuc.tournaments.controller;
 
-import com.unibuc.tournaments.dto.GameRequest;
-import com.unibuc.tournaments.mapper_orig.GameMapper;
 import com.unibuc.tournaments.model.game.Game;
-import com.unibuc.tournaments.service_orig.GameService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.unibuc.tournaments.service.GameService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
-@RestController
-@RequestMapping("/games")
+@Controller
+@RequestMapping("/game")
 public class GameController {
-    private GameService gameService;
-    private GameMapper gameMapper;
+    private final GameService gameService;
 
-    public GameController(GameService gameService, GameMapper gameMapper) {
+    public GameController(GameService gameService) {
         this.gameService = gameService;
-        this.gameMapper = gameMapper;
     }
 
-    @GetMapping()
-    public List<Game> getGamesFiltered(
-            @RequestParam(required = false) String genre,
-            @RequestParam(required = false) String publisherName) {
-        return gameService.getGamesFiltered(genre, publisherName);
-    }
-
-    @GetMapping("/{id}")
-    public Game getGame(@PathVariable int id) {
-        return gameService.getGame(id);
-    }
-
-    @PostMapping()
-    public ResponseEntity<Game> createGame(
-            @Valid
-            @RequestBody GameRequest gameRequest) {
-        Game game = gameMapper.gameRequestToGame(gameRequest);
-        Game repositoryGame = gameService.createGame(game);
-        return ResponseEntity.created(URI.create("/games/" + game.getId()))
-                .body(repositoryGame);
+    @GetMapping("/list")
+    public ModelAndView gamesList() {
+        ModelAndView modelAndView = new ModelAndView("games");
+        List<Game> games = gameService.findAll();
+        modelAndView.addObject("games", games);
+        return modelAndView;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteGame(@PathVariable int id) {
-        gameService.deleteGame(id);
-
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body("Success");
+    public String deleteById(@PathVariable String id){
+        gameService.deleteById(Long.valueOf(id));
+        return "redirect:/game/list";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity updateGame(
-            @PathVariable int id,
-            @Valid
-            @RequestBody GameRequest gameRequest) {
+//    @GetMapping()
+//    public List<Game> getGamesFiltered(
+//            @RequestParam(required = false) String genre,
+//            @RequestParam(required = false) String publisherName) {
+//        return gameService.getGamesFiltered(genre, publisherName);
+//    }
 
-        Game game = gameMapper.gameRequestToGame(gameRequest);
-        Game repositoryGame = gameService.updateGame(id, game);
-        return ResponseEntity.created(URI.create("/games/" + game.getId()))
-                .body(repositoryGame);
-    }
+//    @GetMapping("/{id}")
+//    public Game getGame(@PathVariable int id) {
+//        return gameService.getGame(id);
+//    }
+//
+//    @PostMapping()
+//    public ResponseEntity<Game> createGame(
+//            @Valid
+//            @RequestBody GameRequest gameRequest) {
+//        Game game = gameMapper.gameRequestToGame(gameRequest);
+//        Game repositoryGame = gameService.createGame(game);
+//        return ResponseEntity.created(URI.create("/games/" + game.getId()))
+//                .body(repositoryGame);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity deleteGame(@PathVariable int id) {
+//        gameService.deleteGame(id);
+//
+//        return ResponseEntity
+//                .status(HttpStatus.ACCEPTED)
+//                .body("Success");
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity updateGame(
+//            @PathVariable int id,
+//            @Valid
+//            @RequestBody GameRequest gameRequest) {
+//
+//        Game game = gameMapper.gameRequestToGame(gameRequest);
+//        Game repositoryGame = gameService.updateGame(id, game);
+//        return ResponseEntity.created(URI.create("/games/" + game.getId()))
+//                .body(repositoryGame);
+//    }
 }

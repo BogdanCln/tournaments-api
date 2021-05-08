@@ -19,7 +19,10 @@ public class Tournament {
     private Game game;
 
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
     private TournamentStatus status;
+
     private Date startDate;
     private Date endDate;
     private String location;

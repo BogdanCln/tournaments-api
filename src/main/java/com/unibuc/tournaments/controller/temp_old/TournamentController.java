@@ -1,4 +1,4 @@
-package com.unibuc.tournaments.controller_orig;
+package com.unibuc.tournaments.controller.temp_old;
 
 import com.unibuc.tournaments.dto.MatchUpdateRequest;
 import com.unibuc.tournaments.dto.TournamentRequest;

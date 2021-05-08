@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Games</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <table class="table table-hover ">
+        <thead class="thead-inverse">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Publisher name</th>
+            <th>Genre</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tr th:each="game, stat : ${games}"
+            th:class="${stat.odd}? 'table-light':'table-dark'"
+        >
+            <td th:text="${game.id}">1</td>
+            <td th:text="${game.name}">Game 1</td>
+            <td th:text="${game.publisherName}">Publisher name</td>
+            <td th:text="${game.genre}">Genre</td>
+            <td>
+                <form action="#" th:action="@{'/game/' + ${game.id}}" th:method="delete">
+                    <button type="submit" class="btn">
+                        Delete
+                    </button>
+                </form>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

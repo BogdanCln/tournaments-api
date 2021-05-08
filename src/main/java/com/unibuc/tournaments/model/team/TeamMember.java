@@ -12,12 +12,13 @@ import java.util.List;
 public class TeamMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @Enumerated(value = EnumType.STRING)
     private TeamMemberType type;
     private String firstName;
     private String lastName;

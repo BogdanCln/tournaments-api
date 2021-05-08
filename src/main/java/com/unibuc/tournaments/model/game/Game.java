@@ -11,10 +11,12 @@ import java.util.List;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
     private String publisherName;
+
+    @Enumerated(value = EnumType.STRING)
     private GameGenre genre;
 
     @OneToMany(mappedBy = "game")
