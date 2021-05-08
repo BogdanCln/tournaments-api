@@ -50,6 +50,13 @@ public class GameController {
         return "redirect:/game/list";
     }
 
+    // New game form
+    @RequestMapping("/edit/{id}")
+    public String newFilm(@PathVariable String id, Model model) {
+        Game game = gameService.findById(Long.valueOf(id));
+        model.addAttribute("game", game);
+        return "game-form";
+    }
 
     // New game form
     @RequestMapping("/new")
