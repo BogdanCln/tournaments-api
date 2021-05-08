@@ -1,9 +1,29 @@
 --delete from game;
 --
-select * from game;
+select *
+from game;
 --
 insert into game
 values (null, 'FPS', 'CS:GO', 'Valve');
 --
 insert into game
 values (null, 'MOBA', 'Dota 2', 'Valve');
+--
+insert into team
+values (1, 'Astralis', 1);
+
+insert into team_member
+values (null, '1993-03-03', 'Peter', 'Rasmussen', 'dupreeh', 'PLAYER', 1);
+insert into team_member
+values (null, '1993-06-03', 'Pete', 'Asmussen', 'xyp9x', 'PLAYER', 1);
+insert into team_member
+values (null, '1993-05-03', 'Peer', 'Smussen', 'gla1ve', 'PLAYER', 1);
+insert into team_member
+values (null, '1995-03-03', 'Pter', 'Russen', 'Magisk', 'PLAYER', 1);
+insert into team_member
+values (null, '1995-03-03', 'Peter', 'Ran', 'Bubzkji', 'PLAYER', 1);
+--
+insert into team
+values (2, 'G2', 1);
+insert into team
+values (3, 'Faze', 1);

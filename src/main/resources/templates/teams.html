@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!--/*/ <th:block th:include="../fragments/general.html :: head-imports">
+        </th:block> /*/-->
+    <title>Teams | Tournaments app</title>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:replace="../fragments/general.html :: nav"></div>
+
+    <h1>Teams</h1>
+    <table class="table table-hover ">
+        <thead class="thead-inverse">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Game</th>
+            <th>Members</th>
+            <th>Tournaments</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tr th:each="team : ${teams}">
+            <td th:text="${team.id}"></td>
+            <td th:text="${team.name}"></td>
+            <td th:text="${team.game.name}"></td>
+            <td>
+                <a class="btn btn-sm btn-info" href="#" th:href="@{'/team/members/' + ${team.id}}">Go to team
+                    members</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-info" href="#" th:href="@{'/team/tournaments/' + ${team.id}}">Go to team
+                    tournaments</a>
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    <a class="btn btn-sm btn-info" href="#" th:href="@{'/team/edit/' + ${team.id}}">Edit</a>
+
+                    <form action="#" th:action="@{'/team/' + ${team.id}}" th:method="delete">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+        </tr>
+    </table>
+    <a class="btn btn-info btn-lg" href="/team/new">New team</a>
+</div>
+</body>
+</html>

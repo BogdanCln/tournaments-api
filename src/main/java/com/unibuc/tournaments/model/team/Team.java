@@ -5,6 +5,7 @@ import com.unibuc.tournaments.model.tournament.Tournament;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -14,13 +15,14 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<TeamMember> members;
 
     @ManyToMany(mappedBy = "teams")

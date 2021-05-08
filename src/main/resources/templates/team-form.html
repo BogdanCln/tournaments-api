@@ -2,37 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Game Form</title>
+    <title>Team Form</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
     <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <body>
-<form th:object="${game}" th:action="@{/game/}" method="post" enctype="multipart/form-data">
+<form th:object="${team}" th:action="@{/team/}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}"/>
     <div class="container">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h1 class="panel-title">New game</h1>
+                <h1 class="panel-title">New team</h1>
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3 form-group">
-                        <label>Game name:</label>
+                        <label>Team name:</label>
                         <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</label>
                         <input type="text" class="form-control" th:field="*{name}"/>
                     </div>
-                    <div class="col-md-3 form-group">
-                        <label>Publisher name:</label>
-                        <label th:if="${#fields.hasErrors('publisherName')}" th:errors="*{publisherName}">Error</label>
-                        <input type="text" class="form-control" th:field="*{publisherName}"/>
-                    </div>
 
                     <div class="col-md-2">
-                        <label for="genre">Genre: </label>
-                        <select class="custom-select" id="genre" name="genre" th:field="*{genre}">
-                            <option
-                                    th:each="genreOpt:${T(com.unibuc.tournaments.model.game.GameGenre).values()}"
-                                    th:value="${genreOpt}" th:text="${genreOpt}">
-                            </option>
+                        <label for="game">Game: </label>
+                        <label th:if="${#fields.hasErrors('game')}" th:errors="*{game}">Error</label>
+                        <select class="custom-select" id="game" name="game" th:field="*{game}">
+                            <option th:each="gameOpt: ${games}"
+                                    th:value="${gameOpt.id}"
+                                    th:text="${gameOpt.name}"
+                            ></option>
                         </select>
                     </div>
                 </div>

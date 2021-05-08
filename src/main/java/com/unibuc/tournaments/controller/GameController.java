@@ -35,7 +35,7 @@ public class GameController {
     }
 
     @PostMapping()
-    public String saveOrUpdate(
+    public String createOrUpdate(
             @Valid @ModelAttribute Game game,
             BindingResult bindingResult
     ) {
@@ -50,9 +50,9 @@ public class GameController {
         return "redirect:/game/list";
     }
 
-    // New game form
+    // Edit game form
     @RequestMapping("/edit/{id}")
-    public String newFilm(@PathVariable String id, Model model) {
+    public String update(@PathVariable String id, Model model) {
         Game game = gameService.findById(Long.valueOf(id));
         model.addAttribute("game", game);
         return "game-form";
@@ -60,51 +60,8 @@ public class GameController {
 
     // New game form
     @RequestMapping("/new")
-    public String newFilm(Model model) {
+    public String create(Model model) {
         model.addAttribute("game", new Game());
         return "game-form";
     }
-
-//    @GetMapping()
-//    public List<Game> getGamesFiltered(
-//            @RequestParam(required = false) String genre,
-//            @RequestParam(required = false) String publisherName) {
-//        return gameService.getGamesFiltered(genre, publisherName);
-//    }
-
-//    @GetMapping("/{id}")
-//    public Game getGame(@PathVariable int id) {
-//        return gameService.getGame(id);
-//    }
-//
-//    @PostMapping()
-//    public ResponseEntity<Game> createGame(
-//            @Valid
-//            @RequestBody GameRequest gameRequest) {
-//        Game game = gameMapper.gameRequestToGame(gameRequest);
-//        Game repositoryGame = gameService.createGame(game);
-//        return ResponseEntity.created(URI.create("/games/" + game.getId()))
-//                .body(repositoryGame);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deleteGame(@PathVariable int id) {
-//        gameService.deleteGame(id);
-//
-//        return ResponseEntity
-//                .status(HttpStatus.ACCEPTED)
-//                .body("Success");
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity updateGame(
-//            @PathVariable int id,
-//            @Valid
-//            @RequestBody GameRequest gameRequest) {
-//
-//        Game game = gameMapper.gameRequestToGame(gameRequest);
-//        Game repositoryGame = gameService.updateGame(id, game);
-//        return ResponseEntity.created(URI.create("/games/" + game.getId()))
-//                .body(repositoryGame);
-//    }
 }
