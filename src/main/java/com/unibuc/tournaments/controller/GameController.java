@@ -3,9 +3,12 @@ package com.unibuc.tournaments.controller;
 import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.service.GameService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -26,9 +29,33 @@ public class GameController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteById(@PathVariable String id){
+    public String deleteById(@PathVariable String id) {
         gameService.deleteById(Long.valueOf(id));
         return "redirect:/game/list";
+    }
+
+    @PostMapping()
+    public String saveOrUpdate(
+            @Valid @ModelAttribute Game game,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Validation errors count: " + bindingResult.getErrorCount());
+            return "game-form";
+        }
+
+        System.out.println("Game name: " + game.getName());
+
+        gameService.save(game);
+        return "redirect:/game/list";
+    }
+
+
+    // New game form
+    @RequestMapping("/new")
+    public String newFilm(Model model) {
+        model.addAttribute("game", new Game());
+        return "game-form";
     }
 
 //    @GetMapping()
