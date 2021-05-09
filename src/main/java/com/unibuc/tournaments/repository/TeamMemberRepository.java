@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface TeamMemberRepository extends CrudRepository<TeamMember, Long> {
     List<TeamMember> findByTeamId(Long teamId);
-
 }

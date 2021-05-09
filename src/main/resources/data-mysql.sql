@@ -30,3 +30,8 @@ values (3, 'Faze', 1);
 --
 insert into tournament values (null, '2020-06-06', 'Online', 'Tournament test 1', '2020-05-05', 'CANCELED', 1);
 insert into tournament values (null, '2021-06-06', 'Online', 'Tournament test 2', '2021-05-05', 'ONGOING', 1);
+--
+insert into bracket values(null, 'RO16', 1);
+insert into bracket values(null, 'Quarter finals', 1);
+insert into bracket values(null, 'Semi finals', 1);
+insert into bracket values(null, 'Grand final', 1);

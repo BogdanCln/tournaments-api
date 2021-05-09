@@ -1,11 +1,10 @@
 package com.unibuc.tournaments.model.tournament;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Map;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -14,10 +13,13 @@ import java.util.List;
 public class Bracket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
+    @NotBlank
+    private String phaseName;
 
     @ManyToOne
-    @JoinColumn(name = "tournament_id")
+    @JoinColumn(name = "tournament_id", nullable = false)
     private Tournament tournament;
 
     @OneToMany(mappedBy = "bracket")

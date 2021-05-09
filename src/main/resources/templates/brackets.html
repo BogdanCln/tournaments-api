@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!--/*/ <th:block th:include="../fragments/general.html :: head-imports">
+        </th:block> /*/-->
+    <title>Brackets | Tournaments app</title>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:replace="../fragments/general.html :: nav"></div>
+
+    <h1 th:text="${tournament.name} + ' bracket phases'"></h1>
+    <table class="table table-hover ">
+        <thead class="thead-inverse">
+        <tr>
+            <th>ID</th>
+            <th>Tournament name</th>
+            <th>Phase name</th>
+            <th>Matches</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tr th:each="bracket : ${brackets}">
+            <td th:text="${bracket.id}"></td>
+            <td th:text="${bracket.tournament.name}"></td>
+            <td th:text="${bracket.phaseName}"></td>
+            <td>
+                <a class="btn btn-sm btn-info" href="#" th:href="@{'/tournament-matches/list/' + ${bracket.id}}">Go to
+                    bracket matches</a>
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    <a class="btn btn-sm btn-info" href="#"
+                       th:href="@{'/bracket/edit/' + ${bracket.id}}">Edit</a>
+
+                    <form action="#" th:action="@{'/bracket/' + ${bracket.id}}" th:method="delete">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+        </tr>
+    </table>
+    <a class="btn btn-info btn-lg" th:href="@{'/bracket/new/' + ${tournament.id}}">New bracket phase</a>
+</div>
+</body>
+</html>

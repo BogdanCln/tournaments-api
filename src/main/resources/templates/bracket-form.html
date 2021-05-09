@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bracket Form</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<form th:object="${bracket}" th:action="@{/bracket/}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}"/>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">Bracket form</h1>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label for="phase-name">Phase name: </label>
+                        <label th:if="${#fields.hasErrors('phaseName')}" th:errors="*{phaseName}">Error</label>
+                        <input type="text" class="form-control" id="phase-name" th:field="*{phaseName}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label>Tournament:</label>
+                        <label th:if="${#fields.hasErrors('tournament')}" th:errors="*{tournament}">Error</label>
+
+                        <select class="custom-select" id="tournament" name="tournament" th:field="*{tournament}">
+                            <option th:each="tournamentOpt: ${tournaments}"
+                                    th:value="${tournamentOpt.id}"
+                                    th:text="${tournamentOpt.name}"
+                            ></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 ml-md-auto">
+                        <button type="submit" class="btn btn-info btn-lg">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
