@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tournament Form</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<form th:object="${tournament}" th:action="@{/tournament/}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}"/>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">New tournament</h1>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label>Tournament name:</label>
+                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</label>
+                        <input type="text" class="form-control" th:field="*{name}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="game">Game: </label>
+                        <label th:if="${#fields.hasErrors('game')}" th:errors="*{game}">Error</label>
+                        <select class="custom-select" id="game" name="game" th:field="*{game}">
+                            <option th:each="gameOpt: ${games}"
+                                    th:value="${gameOpt.id}"
+                                    th:text="${gameOpt.name}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="status">Status: </label>
+                        <select class="custom-select" id="status" name="status" th:field="*{status}">
+                            <option
+                                    th:each="statusOpt:${T(com.unibuc.tournaments.model.tournament.TournamentStatus).values()}"
+                                    th:value="${statusOpt}" th:text="${statusOpt}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="start-date">Start date: </label>
+                        <label th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">Error</label>
+                        <input class="form-control" type="date" id="start-date" th:field="*{startDate}">
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="end-date">End date: </label>
+                        <label th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">Error</label>
+                        <input class="form-control" type="date" id="end-date" th:field="*{endDate}">
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label>Location:</label>
+                        <label th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Error</label>
+                        <input type="text" class="form-control" th:field="*{location}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="game">Teams: </label>
+                        <label th:if="${#fields.hasErrors('teams')}" th:errors="*{teams}">Error</label>
+                        <select class="custom-select" id="team" name="team" th:field="*{teams}" multiple="multiple">
+                            <option th:each="teamOpt: ${allTeams}"
+                                    th:value="${teamOpt.id}"
+                                    th:text="${teamOpt.name}"
+                            ></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 ml-md-auto">
+                        <button type="submit" class="btn btn-info btn-lg">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

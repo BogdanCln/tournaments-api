@@ -10,7 +10,7 @@ public interface GameService {
 
     Game findById(Long id);
 
-    Game save(Game product);
+    Game save(Game game);
 
     void deleteById(Long id);
 }

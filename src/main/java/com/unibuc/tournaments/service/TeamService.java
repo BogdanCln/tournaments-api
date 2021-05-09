@@ -10,7 +10,7 @@ public interface TeamService {
 
     Team findById(Long id);
 
-    Team save(Team product);
+    Team save(Team team);
 
     void deleteById(Long id);
 }

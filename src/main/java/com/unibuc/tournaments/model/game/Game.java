@@ -1,6 +1,7 @@
 package com.unibuc.tournaments.model.game;
 
 import com.unibuc.tournaments.model.team.Team;
+import com.unibuc.tournaments.model.tournament.Tournament;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,4 +28,7 @@ public class Game {
 
     @OneToMany(mappedBy = "game")
     private List<Team> teams;
+
+    @OneToMany(mappedBy = "game")
+    private List<Tournament> tournaments;
 }

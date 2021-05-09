@@ -5,10 +5,11 @@ import com.unibuc.tournaments.model.team.Team;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Setter
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 public class Tournament {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @OneToOne
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
     private String name;
@@ -26,7 +29,10 @@ public class Tournament {
     @Enumerated(value = EnumType.STRING)
     private TournamentStatus status;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private String location;
 

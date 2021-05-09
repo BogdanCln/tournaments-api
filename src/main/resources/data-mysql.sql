@@ -27,3 +27,6 @@ insert into team
 values (2, 'G2', 1);
 insert into team
 values (3, 'Faze', 1);
+--
+insert into tournament values (null, '2020-06-06', 'Online', 'Tournament test 1', '2020-05-05', 'CANCELED', 1);
+insert into tournament values (null, '2021-06-06', 'Online', 'Tournament test 2', '2021-05-05', 'ONGOING', 1);

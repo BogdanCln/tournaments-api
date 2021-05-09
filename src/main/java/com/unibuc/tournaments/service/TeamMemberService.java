@@ -13,7 +13,7 @@ public interface TeamMemberService {
 
     List<TeamMember> findByTeamId(Long teamId);
 
-    TeamMember save(TeamMember product);
+    TeamMember save(TeamMember teamMember);
 
     void deleteById(Long id);
 }
