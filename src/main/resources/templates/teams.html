@@ -28,11 +28,11 @@
             <td th:text="${team.name}"></td>
             <td th:text="${team.game.name}"></td>
             <td>
-                <a class="btn btn-sm btn-info" href="#" th:href="@{'/team/members/' + ${team.id}}">Go to team
+                <a class="btn btn-sm btn-info" href="#" th:href="@{'/team-member/list/' + ${team.id}}">Go to team
                     members</a>
             </td>
             <td>
-                <a class="btn btn-sm btn-info" href="#" th:href="@{'/team/tournaments/' + ${team.id}}">Go to team
+                <a class="btn btn-sm btn-info" href="#" th:href="@{'/tournaments/list/' + ${team.id}}">Go to team
                     tournaments</a>
             </td>
             <td>

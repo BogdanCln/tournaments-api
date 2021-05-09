@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Member Form</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<form th:object="${teamMember}" th:action="@{/team-member/}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}"/>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">Team member form</h1>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label for="first-name">First name: </label>
+                        <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</label>
+                        <input type="text" class="form-control" id="first-name" th:field="*{firstName}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="last-name">Last name: </label>
+                        <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</label>
+                        <input type="text" class="form-control" id="last-name" th:field="*{lastName}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="nick-name">Nickname: </label>
+                        <label th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}">Error</label>
+                        <input type="text" class="form-control" id="nick-name" th:field="*{nickName}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="type">Member type:</label>
+                        <select class="custom-select" id="type" name="type" th:field="*{type}">
+                            <option
+                                    th:each="typeOpt:${T(com.unibuc.tournaments.model.team.TeamMemberType).values()}"
+                                    th:value="${typeOpt}" th:text="${typeOpt}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="type">Team:</label>
+                        <label th:if="${#fields.hasErrors('team')}" th:errors="*{team}">Error</label>
+
+                        <select class="custom-select" id="team" name="team" th:field="*{team}">
+                            <option th:each="teamOpt: ${teams}"
+                                    th:value="${teamOpt.id}"
+                                    th:text="${teamOpt.name}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="dob">Date of birth: </label>
+                        <label th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Error</label>
+                        <input class="form-control" type="date" id="dob" th:field="*{dateOfBirth}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 ml-md-auto">
+                        <button type="submit" class="btn btn-info btn-lg">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

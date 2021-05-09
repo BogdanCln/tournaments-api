@@ -3,13 +3,16 @@ package com.unibuc.tournaments.model.tournament;
 import com.unibuc.tournaments.model.game.Game;
 import com.unibuc.tournaments.model.team.Team;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Data
 @Entity
+@Setter
+@Getter
 public class Tournament {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

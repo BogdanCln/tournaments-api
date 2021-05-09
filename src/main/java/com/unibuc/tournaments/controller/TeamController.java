@@ -42,14 +42,16 @@ public class TeamController {
     @PostMapping()
     public String saveOrUpdate(
             @Valid @ModelAttribute Team team,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
             System.out.println("Validation errors count: " + bindingResult.getErrorCount());
+
+            List<Game> games = gameService.findAll();
+            model.addAttribute("games", games);
             return "team-form";
         }
-
-        System.out.println("Team name: " + team.getName());
 
         teamService.save(team);
         return "redirect:/team/list";
