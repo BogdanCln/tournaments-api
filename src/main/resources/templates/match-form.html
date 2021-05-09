@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Match Form</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<form th:object="${match}" th:action="@{/match/}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}"/>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">Match form</h1>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label for="bracket">Bracket phase: </label>
+                        <label th:if="${#fields.hasErrors('bracket')}" th:errors="*{bracket}">Error</label>
+
+                        <select class="custom-select" id="bracket" name="bracket" th:field="*{bracket}">
+                            <option th:each="bracketOpt: ${brackets}"
+                                    th:value="${bracketOpt.id}"
+                                    th:text="${bracketOpt.phaseName}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="red-team">Red team:</label>
+                        <label th:if="${#fields.hasErrors('redTeam')}" th:errors="*{redTeam}">Error</label>
+                        <select class="custom-select" id="red-team" name="redTeam"
+                                th:field="*{redTeam}">
+                            <option th:each="redTeamOpt: ${tournamentTeams}"
+                                    th:value="${redTeamOpt.id}"
+                                    th:text="${redTeamOpt.name}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="red-team">Blue team:</label>
+                        <label th:if="${#fields.hasErrors('blueTeam')}" th:errors="*{blueTeam}">Error</label>
+                        <select class="custom-select" id="blue-team" name="blueTeam"
+                                th:field="*{blueTeam}">
+                            <option th:each="blueTeamOpt: ${tournamentTeams}"
+                                    th:value="${blueTeamOpt.id}"
+                                    th:text="${blueTeamOpt.name}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="red-team-score">Red team score name: </label>
+                        <label th:if="${#fields.hasErrors('redTeamScore')}" th:errors="*{redTeamScore}">Error</label>
+                        <input type="number" min="0" step="1" class="form-control" id="red-team-score" th:field="*{redTeamScore}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="blue-team-score">Blue team score name: </label>
+                        <label th:if="${#fields.hasErrors('blueTeamScore')}" th:errors="*{blueTeamScore}">Error</label>
+                        <input type="number" min="0" step="1" class="form-control" id="blue-team-score" th:field="*{blueTeamScore}"/>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="status">Status: </label>
+                        <select class="custom-select" id="status" name="status" th:field="*{status}">
+                            <option
+                                    th:each="statusOpt:${T(com.unibuc.tournaments.model.tournament.MatchStatus).values()}"
+                                    th:value="${statusOpt}" th:text="${statusOpt}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="scheduled-date">Start date: </label>
+                        <label th:if="${#fields.hasErrors('scheduledDate')}" th:errors="*{scheduledDate}">Error</label>
+                        <input class="form-control" type="datetime-local" id="scheduled-date" th:field="*{scheduledDate}">
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="default-win">Default win: </label>
+                        <label th:if="${#fields.hasErrors('defaultWin')}" th:errors="*{defaultWin}">Error</label>
+                        <input class="form-control" type="checkbox" id="default-win" th:field="*{defaultWin}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 ml-md-auto">
+                        <button type="submit" class="btn btn-info btn-lg">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
