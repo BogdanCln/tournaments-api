@@ -28,14 +28,11 @@
                 </li>
             </ul>
         </div>
+        <div class="col-md-3">
+            <form th:action="@{/logout}" method="POST"><input type="submit" class="btn btn-primary" value="Logout">
+            </form>
+        </div>
     </nav>
 </div>
-
-<footer th:fragment="footer">
-    <a th:href="@{/fragments}">Fragments Index</a> |
-    <a th:href="@{/markup}">Markup inclussion</a> |
-    <a th:href="@{/params}">Fragment params</a> |
-    <a th:href="@{/other}">Other</a>
-</footer>
 </body>
 </html>
